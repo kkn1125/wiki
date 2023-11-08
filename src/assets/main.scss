@@ -1,0 +1,213 @@
+@import "global.scss";
+@import "palette.scss";
+
+$primary: #1c1ca2;
+
+@mixin capitalize {
+  text-transform: capitalize;
+}
+/* padding */
+@mixin pl($size) {
+  padding-left: #{$size * 0.5}rem;
+}
+@mixin pr($size) {
+  padding-right: #{$size * 0.5}rem;
+}
+@mixin px($size) {
+  @include pl($size);
+  @include pr($size);
+}
+@mixin pt($size) {
+  padding-top: #{$size * 0.5}rem;
+}
+@mixin pb($size) {
+  padding-bottom: #{$size * 0.5}rem;
+}
+@mixin py($size) {
+  @include pt($size);
+  @include pb($size);
+}
+@mixin p($size) {
+  @include px($size);
+  @include py($size);
+}
+/* margin */
+@mixin ml($size) {
+  margin-left: #{$size * 0.5}rem;
+}
+@mixin mr($size) {
+  margin-right: #{$size * 0.5}rem;
+}
+@mixin mx($size) {
+  @include ml($size);
+  @include mr($size);
+}
+@mixin mt($size) {
+  margin-top: #{$size * 0.5}rem;
+}
+@mixin mb($size) {
+  margin-bottom: #{$size * 0.5}rem;
+}
+@mixin my($size) {
+  @include mt($size);
+  @include mb($size);
+}
+@mixin m($size) {
+  @include mx($size);
+  @include my($size);
+}
+@mixin line-height($size) {
+  line-height: #{$size};
+}
+@mixin btn-hover($color, $percent) {
+  &:hover {
+    --btn-base-bg-color: #{$color + percent-to-hex($percent)};
+  }
+}
+
+main {
+  width: 80%;
+  margin: auto;
+}
+
+.title {
+  font-weight: 700;
+  @include capitalize;
+}
+
+.capitalize {
+  @include capitalize;
+}
+
+@for $i from 1 to 11 {
+  .title-#{$i} {
+    font-size: #{5 - $i}rem;
+  }
+}
+
+@for $i from 0 to 11 {
+  /* padding */
+  .pl-#{$i} {
+    @include pl($i);
+  }
+  .pr-#{$i} {
+    @include pr($i);
+  }
+  .px-#{$i} {
+    @include px($i);
+  }
+  .pt-#{$i} {
+    @include pt($i);
+  }
+  .pb-#{$i} {
+    @include pb($i);
+  }
+  .py-#{$i} {
+    @include py($i);
+  }
+  .p-#{$i} {
+    @include p($i);
+  }
+  /* margin */
+  .ml-#{$i} {
+    @include ml($i);
+  }
+  .mr-#{$i} {
+    @include mr($i);
+  }
+  .mx-#{$i} {
+    @include mx($i);
+  }
+  .mt-#{$i} {
+    @include mt($i);
+  }
+  .mb-#{$i} {
+    @include mb($i);
+  }
+  .my-#{$i} {
+    @include my($i);
+  }
+  .m-#{$i} {
+    @include m($i);
+  }
+
+  .btn-#{$i} {
+    @include px($i * 2 * 0.25);
+    @include py($i * 0.25);
+    @include line-height(1 + $i * 0.1);
+  }
+}
+
+$btn-hover-opacity: 80;
+.btn {
+  --btn-base-bg-color: #{$info-color};
+  --btn-color: #{use-text-color($info-color)};
+  cursor: pointer;
+  user-select: none;
+  border-radius: 0;
+  border: none;
+  outline: none;
+
+  background-color: var(--btn-base-bg-color);
+  color: var(--btn-color);
+
+  @include btn-hover($info-color, $btn-hover-opacity);
+}
+
+.btn-primary {
+  --btn-base-bg-color: #{$primary-color};
+  --btn-color: #{use-text-color($primary-color)};
+  @include btn-hover($primary-color, $btn-hover-opacity);
+}
+
+.btn-warn {
+  --btn-base-bg-color: #{$warn-color};
+  --btn-color: #{use-text-color($warn-color)};
+  @include btn-hover($warn-color, $btn-hover-opacity);
+}
+
+.btn-primary {
+  --btn-base-bg-color: #{$primary-color};
+  --btn-color: #{use-text-color($primary-color)};
+  @include btn-hover($primary-color, $btn-hover-opacity);
+}
+.btn-secondary {
+  --btn-base-bg-color: #{$secondary-color};
+  --btn-color: #{use-text-color($secondary-color)};
+  @include btn-hover($secondary-color, $btn-hover-opacity);
+}
+.btn-success {
+  --btn-base-bg-color: #{$success-color};
+  --btn-color: #{use-text-color($success-color)};
+  @include btn-hover($success-color, $btn-hover-opacity);
+}
+.btn-info {
+  --btn-base-bg-color: #{$info-color};
+  --btn-color: #{use-text-color($info-color)};
+  @include btn-hover($info-color, $btn-hover-opacity);
+}
+.btn-warn {
+  --btn-base-bg-color: #{$warn-color};
+  --btn-color: #{use-text-color($warn-color)};
+  @include btn-hover($warn-color, $btn-hover-opacity);
+}
+.btn-error {
+  --btn-base-bg-color: #{$error-color};
+  --btn-color: #{use-text-color($error-color)};
+  @include btn-hover($error-color, $btn-hover-opacity);
+}
+.btn-black {
+  --btn-base-bg-color: #{$black-color};
+  --btn-color: #{use-text-color($black-color)};
+  @include btn-hover($black-color, $btn-hover-opacity);
+}
+.btn-gray {
+  --btn-base-bg-color: #{$gray-color};
+  --btn-color: #{use-text-color($gray-color)};
+  @include btn-hover($gray-color, $btn-hover-opacity);
+}
+.btn-white {
+  --btn-base-bg-color: #{$white-color};
+  --btn-color: #{use-text-color($white-color)};
+  @include btn-hover($white-color, $btn-hover-opacity);
+}

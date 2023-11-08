@@ -1,0 +1,11 @@
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+@for $i from 1 to 6 {
+  h#{$i} {
+    margin: 0;
+  }
+}

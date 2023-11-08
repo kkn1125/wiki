@@ -1,0 +1,107 @@
+@use "sass:math";
+
+// /** Returns an at least one byte hex value */
+@function dec-to-hex($d) {
+  $hexVals: "a" "b" "c" "d" "e" "f";
+  $base: 16;
+  $quotient: $d;
+  $result: "";
+  @if $d == 0 {
+    $result: "00";
+  }
+  @while $quotient != 0 {
+    $mod: $quotient % $base;
+    $quotient: floor($quotient / $base);
+    @if $mod > 9 {
+      $mod: nth($hexVals, $mod - 9);
+    }
+    @if $d < $base {
+      $result: "0" + $mod;
+    } @else {
+      $result: $mod + $result;
+    }
+  }
+  @return $result;
+}
+
+@function percent-to-hex($percentage) {
+  $value: math.div($percentage, 100); // 0에서 1 사이의 값으로 변환
+  $hex: math.floor($value * 255); // 0에서 255로 변환
+  $hex: math.max($hex, 0); // 음수 방지
+  $hex: math.min($hex, 255); // 255 이상 방지
+  @debug ($hex);
+  $hexString: dec-to-hex($hex); // 16진수로 변환하고 2자리로 만듭니다.
+  @return $hexString;
+}
+
+// @function percent-to-hex($percentage) {
+//   $percentage: max(
+//     min($percentage, 100),
+//     0
+//   ); // Ensure the input is between 0 and 100
+//   $hexValue: percentage(
+//     $percentage / 100
+//   ); // Convert percentage to a color between white and black
+//   @return $hexValue;
+// }
+
+// 함수 이름: color-contrast
+// 매개변수: $color1 - 대비를 비교할 첫 번째 색상
+//          $color2 - 대비를 비교할 두 번째 색상
+// 반환값: 대비 점수 (0부터 21까지의 값)
+
+@function get-color-value($color) {
+  @return (red($color) * 0.299) + (green($color) * 0.587) +
+    (blue($color) * 0.114);
+}
+@function color-contrast($color1, $color2) {
+  // RGB 값을 가져오는 내부 함수
+
+  // 상대적 밝기 계산
+  $luminance1: get-color-value($color1);
+  $luminance2: get-color-value($color2);
+
+  // 대비 계산
+  $contrast: calc(abs($luminance1 - $luminance2) / 255);
+  // @debug "#{$contrast}대비";
+  // 대비 점수를 0에서 21 사이로 정규화
+  @if $contrast > 0.5 {
+    @return 21;
+  } @else {
+    @return floor($contrast * 21);
+  }
+}
+
+$primary-color: #4651e9;
+$secondary-color: #e0379f;
+$success-color: #41ec96;
+$info-color: #2977df;
+$warn-color: #e7c247;
+$error-color: #e92f4e;
+$black-color: #000000;
+$gray-color: #656565;
+$white-color: #ffffff;
+
+@function use-text-color($color) {
+  $recommand-white: color-contrast($color, $white-color);
+  $recommand-black: color-contrast($color, $black-color);
+  @if $recommand-white > $recommand-black {
+    @return $white-color;
+  } @else {
+    @return $black-color;
+  }
+}
+
+$contrast-primary-color: #{use-text-color($primary-color)};
+$contrast-secondary-color: #{use-text-color($secondary-color)};
+$contrast-success-color: #{use-text-color($success-color)};
+$contrast-info-color: #{use-text-color($info-color)};
+$contrast-warn-color: #{use-text-color($warn-color)};
+$contrast-error-color: #{use-text-color($error-color)};
+$contrast-black-color: #{use-text-color($black-color)};
+$contrast-gray-color: #{use-text-color($gray-color)};
+$contrast-white-color: #{use-text-color($white-color)};
+
+@function to-rgb($value) {
+  @return red($value), green($value), blue($value);
+}
