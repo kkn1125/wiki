@@ -1,0 +1,179 @@
+@mixin capitalize {
+  text-transform: capitalize;
+}
+@mixin lowercase {
+  text-transform: lowercase;
+}
+@mixin uppercase {
+  text-transform: uppercase;
+}
+
+/* padding */
+@mixin pl($size) {
+  padding-left: #{$size * 0.5}rem;
+}
+@mixin pr($size) {
+  padding-right: #{$size * 0.5}rem;
+}
+@mixin px($size) {
+  @include pl($size);
+  @include pr($size);
+}
+@mixin pt($size) {
+  padding-top: #{$size * 0.5}rem;
+}
+@mixin pb($size) {
+  padding-bottom: #{$size * 0.5}rem;
+}
+@mixin py($size) {
+  @include pt($size);
+  @include pb($size);
+}
+@mixin p($size) {
+  @include px($size);
+  @include py($size);
+}
+/* margin */
+@mixin ml($size) {
+  margin-left: #{$size * 0.5}rem;
+}
+@mixin mr($size) {
+  margin-right: #{$size * 0.5}rem;
+}
+@mixin mx($size) {
+  @include ml($size);
+  @include mr($size);
+}
+@mixin mt($size) {
+  margin-top: #{$size * 0.5}rem;
+}
+@mixin mb($size) {
+  margin-bottom: #{$size * 0.5}rem;
+}
+@mixin my($size) {
+  @include mt($size);
+  @include mb($size);
+}
+@mixin m($size) {
+  @include mx($size);
+  @include my($size);
+}
+@mixin line-height($size) {
+  line-height: #{$size};
+}
+@mixin btn-hover($color, $percent) {
+  &:hover {
+    --btn-base-bg-color: #{$color + percent-to-hex($percent)};
+  }
+}
+
+/* breakpoints */
+$breakpoint-xs: 280px; // small size mobile
+$breakpoint-sm: 335px; // mobile
+$breakpoint-md: 768px; // tablete
+$breakpoint-lg: 1024px; // desktop
+$breakpoint-xl: 1280px; // large desktop
+
+/* display */
+@mixin d-flex {
+  display: flex;
+}
+@mixin d-block {
+  display: block;
+}
+@mixin d-inline {
+  display: inline;
+}
+@mixin d-inline-flex {
+  display: inline-flex;
+}
+@mixin d-inline-block {
+  display: inline-block;
+}
+@mixin d-none {
+  display: none;
+}
+
+@mixin xs {
+  @media (min-width: 0) {
+    @content;
+  }
+}
+@mixin sm {
+  @media (min-width: #{$breakpoint-sm}) {
+    @content;
+  }
+}
+@mixin md {
+  @media (min-width: #{$breakpoint-md}) {
+    @content;
+  }
+}
+@mixin lg {
+  @media (min-width: #{$breakpoint-lg}) {
+    @content;
+  }
+}
+@mixin xl {
+  @media (min-width: #{$breakpoint-xl}) {
+    @content;
+  }
+}
+
+@mixin breakpoint-set($name) {
+  .#{$name} {
+    @content;
+  }
+  .#{$name}-xs {
+    @include xs {
+      @content;
+    }
+  }
+  .#{$name}-sm {
+    @include sm {
+      @content;
+    }
+  }
+  .#{$name}-md {
+    @include md {
+      @content;
+    }
+  }
+  .#{$name}-lg {
+    @include lg {
+      @content;
+    }
+  }
+  .#{$name}-xl {
+    @include xl {
+      @content;
+    }
+  }
+}
+
+@mixin color-set($type, $color) {
+  @content;
+  @if ($type == "btn") {
+    --#{$type}-base-bg-color: #{$color};
+    --#{$type}-color: #{use-text-color($color)};
+    @include btn-hover($color, $btn-hover-opacity);
+  }
+  @if ($type == "text") {
+    --#{$type}-base-color: #{$color};
+  }
+}
+
+@mixin border-radius($radius) {
+  border-radius: $radius;
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -ms-border-radius: $radius;
+  -o-border-radius: $radius;
+}
+@mixin translate($x, $y) {
+  transform: translate($x, $y);
+  -webkit-transform: translate($x, $y);
+  -moz-transform: translate($x, $y);
+  -ms-transform: translate($x, $y);
+  -o-transform: translate($x, $y);
+}

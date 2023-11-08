@@ -11,7 +11,7 @@
   }
   @while $quotient != 0 {
     $mod: $quotient % $base;
-    $quotient: floor($quotient / $base);
+    $quotient: math.floor(math.div($quotient, $base));
     @if $mod > 9 {
       $mod: nth($hexVals, $mod - 9);
     }
@@ -29,7 +29,6 @@
   $hex: math.floor($value * 255); // 0에서 255로 변환
   $hex: math.max($hex, 0); // 음수 방지
   $hex: math.min($hex, 255); // 255 이상 방지
-  @debug ($hex);
   $hexString: dec-to-hex($hex); // 16진수로 변환하고 2자리로 만듭니다.
   @return $hexString;
 }

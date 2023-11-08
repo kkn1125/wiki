@@ -1,0 +1,20 @@
+.title {
+  font-weight: 700;
+  @include capitalize;
+}
+
+.capitalize {
+  @include capitalize;
+}
+.uppercase {
+  @include uppercase;
+}
+.lowercase {
+  @include lowercase;
+}
+
+@for $i from 1 to 11 {
+  .title-#{$i} {
+    font-size: #{5 - $i}rem;
+  }
+}

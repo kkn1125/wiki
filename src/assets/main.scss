@@ -1,89 +1,7 @@
-@import "global.scss";
-@import "palette.scss";
-
-$primary: #1c1ca2;
-
-@mixin capitalize {
-  text-transform: capitalize;
-}
-/* padding */
-@mixin pl($size) {
-  padding-left: #{$size * 0.5}rem;
-}
-@mixin pr($size) {
-  padding-right: #{$size * 0.5}rem;
-}
-@mixin px($size) {
-  @include pl($size);
-  @include pr($size);
-}
-@mixin pt($size) {
-  padding-top: #{$size * 0.5}rem;
-}
-@mixin pb($size) {
-  padding-bottom: #{$size * 0.5}rem;
-}
-@mixin py($size) {
-  @include pt($size);
-  @include pb($size);
-}
-@mixin p($size) {
-  @include px($size);
-  @include py($size);
-}
-/* margin */
-@mixin ml($size) {
-  margin-left: #{$size * 0.5}rem;
-}
-@mixin mr($size) {
-  margin-right: #{$size * 0.5}rem;
-}
-@mixin mx($size) {
-  @include ml($size);
-  @include mr($size);
-}
-@mixin mt($size) {
-  margin-top: #{$size * 0.5}rem;
-}
-@mixin mb($size) {
-  margin-bottom: #{$size * 0.5}rem;
-}
-@mixin my($size) {
-  @include mt($size);
-  @include mb($size);
-}
-@mixin m($size) {
-  @include mx($size);
-  @include my($size);
-}
-@mixin line-height($size) {
-  line-height: #{$size};
-}
-@mixin btn-hover($color, $percent) {
-  &:hover {
-    --btn-base-bg-color: #{$color + percent-to-hex($percent)};
-  }
-}
-
-main {
-  width: 80%;
-  margin: auto;
-}
-
-.title {
-  font-weight: 700;
-  @include capitalize;
-}
-
-.capitalize {
-  @include capitalize;
-}
-
-@for $i from 1 to 11 {
-  .title-#{$i} {
-    font-size: #{5 - $i}rem;
-  }
-}
+@import "global";
+@import "palette";
+@import "mixin";
+@import "text";
 
 @for $i from 0 to 11 {
   /* padding */
@@ -154,60 +72,174 @@ $btn-hover-opacity: 80;
   @include btn-hover($info-color, $btn-hover-opacity);
 }
 
-.btn-primary {
-  --btn-base-bg-color: #{$primary-color};
-  --btn-color: #{use-text-color($primary-color)};
-  @include btn-hover($primary-color, $btn-hover-opacity);
+/* btn */
+// .btn-primary {
+//   @include color-set("btn", $primary-color);
+// }
+// .btn-secondary {
+//   @include color-set("btn", $secondary-color);
+// }
+// .btn-success {
+//   @include color-set("btn", $success-color);
+// }
+// .btn-info {
+//   @include color-set("btn", $info-color);
+// }
+// .btn-warn {
+//   @include color-set("btn", $warn-color);
+// }
+// .btn-error {
+//   @include color-set("btn", $error-color);
+// }
+// .btn-black {
+//   @include color-set("btn", $black-color);
+// }
+// .btn-gray {
+//   @include color-set("btn", $gray-color);
+// }
+// .btn-white {
+//   @include color-set("btn", $white-color);
+// }
+
+/* text */
+// .text-primary {
+//   @include color-set("text", $primary-color) {
+//     color: var(--text-base-color);
+//   }
+// }
+// .text-secondary {
+//   @include color-set("text", $secondary-color) {
+//     color: var(--text-base-color);
+//   }
+// }
+// .text-success {
+//   @include color-set("text", $success-color) {
+//     color: var(--text-base-color);
+//   }
+// }
+// .text-info {
+//   @include color-set("text", $info-color) {
+//     color: var(--text-base-color);
+//   }
+// }
+// .text-warn {
+//   @include color-set("text", $warn-color) {
+//     color: var(--text-base-color);
+//   }
+// }
+// .text-error {
+//   @include color-set("text", $error-color) {
+//     color: var(--text-base-color);
+//   }
+// }
+// .text-black {
+//   @include color-set("text", $black-color) {
+//     color: var(--text-base-color);
+//   }
+// }
+// .text-gray {
+//   @include color-set("text", $gray-color) {
+//     color: var(--text-base-color);
+//   }
+// }
+// .text-white {
+//   @include color-set("text", $white-color) {
+//     color: var(--text-base-color);
+//   }
+// }
+
+@include breakpoint-set("d-none") {
+  @include d-none;
+}
+@include breakpoint-set("d-inline") {
+  @include d-inline;
+}
+@include breakpoint-set("d-inline-flex") {
+  @include d-inline-flex;
+}
+@include breakpoint-set("d-inline-block") {
+  @include d-inline-block;
+}
+@include breakpoint-set("d-block") {
+  @include d-block;
+}
+@include breakpoint-set("d-flex") {
+  @include d-flex;
 }
 
-.btn-warn {
-  --btn-base-bg-color: #{$warn-color};
-  --btn-color: #{use-text-color($warn-color)};
-  @include btn-hover($warn-color, $btn-hover-opacity);
+/* colors */
+@include breakpoint-set("text-primary") {
+  @include color-set("text", $primary-color) {
+    color: var(--text-base-color);
+  }
+}
+@include breakpoint-set("text-secondary") {
+  @include color-set("text", $secondary-color) {
+    color: var(--text-base-color);
+  }
+}
+@include breakpoint-set("text-success") {
+  @include color-set("text", $success-color) {
+    color: var(--text-base-color);
+  }
+}
+@include breakpoint-set("text-info") {
+  @include color-set("text", $info-color) {
+    color: var(--text-base-color);
+  }
+}
+@include breakpoint-set("text-warn") {
+  @include color-set("text", $warn-color) {
+    color: var(--text-base-color);
+  }
+}
+@include breakpoint-set("text-error") {
+  @include color-set("text", $error-color) {
+    color: var(--text-base-color);
+  }
+}
+@include breakpoint-set("text-black") {
+  @include color-set("text", $black-color) {
+    color: var(--text-base-color);
+  }
+}
+@include breakpoint-set("text-gray") {
+  @include color-set("text", $gray-color) {
+    color: var(--text-base-color);
+  }
+}
+@include breakpoint-set("text-white") {
+  @include color-set("text", $white-color) {
+    color: var(--text-base-color);
+  }
+}
+/* btn color */
+@include breakpoint-set("btn-primary") {
+  @include color-set("btn", $primary-color);
+}
+@include breakpoint-set("btn-secondary") {
+  @include color-set("btn", $secondary-color);
+}
+@include breakpoint-set("btn-success") {
+  @include color-set("btn", $success-color);
+}
+@include breakpoint-set("btn-info") {
+  @include color-set("btn", $info-color);
+}
+@include breakpoint-set("btn-warn") {
+  @include color-set("btn", $warn-color);
+}
+@include breakpoint-set("btn-error") {
+  @include color-set("btn", $error-color);
+}
+@include breakpoint-set("btn-black") {
+  @include color-set("btn", $black-color);
+}
+@include breakpoint-set("btn-gray") {
+  @include color-set("btn", $gray-color);
+}
+@include breakpoint-set("btn-white") {
+  @include color-set("btn", $white-color);
 }
 
-.btn-primary {
-  --btn-base-bg-color: #{$primary-color};
-  --btn-color: #{use-text-color($primary-color)};
-  @include btn-hover($primary-color, $btn-hover-opacity);
-}
-.btn-secondary {
-  --btn-base-bg-color: #{$secondary-color};
-  --btn-color: #{use-text-color($secondary-color)};
-  @include btn-hover($secondary-color, $btn-hover-opacity);
-}
-.btn-success {
-  --btn-base-bg-color: #{$success-color};
-  --btn-color: #{use-text-color($success-color)};
-  @include btn-hover($success-color, $btn-hover-opacity);
-}
-.btn-info {
-  --btn-base-bg-color: #{$info-color};
-  --btn-color: #{use-text-color($info-color)};
-  @include btn-hover($info-color, $btn-hover-opacity);
-}
-.btn-warn {
-  --btn-base-bg-color: #{$warn-color};
-  --btn-color: #{use-text-color($warn-color)};
-  @include btn-hover($warn-color, $btn-hover-opacity);
-}
-.btn-error {
-  --btn-base-bg-color: #{$error-color};
-  --btn-color: #{use-text-color($error-color)};
-  @include btn-hover($error-color, $btn-hover-opacity);
-}
-.btn-black {
-  --btn-base-bg-color: #{$black-color};
-  --btn-color: #{use-text-color($black-color)};
-  @include btn-hover($black-color, $btn-hover-opacity);
-}
-.btn-gray {
-  --btn-base-bg-color: #{$gray-color};
-  --btn-color: #{use-text-color($gray-color)};
-  @include btn-hover($gray-color, $btn-hover-opacity);
-}
-.btn-white {
-  --btn-base-bg-color: #{$white-color};
-  --btn-color: #{use-text-color($white-color)};
-  @include btn-hover($white-color, $btn-hover-opacity);
-}
+@import "page.scss";

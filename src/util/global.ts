@@ -2,6 +2,13 @@ export const APP = document.querySelector<HTMLDivElement>(
   "#app"
 ) as HTMLDivElement;
 
+export const WIKI = {
+  BRAND_NAME: import.meta.env.VITE_BRAND_NAME,
+  VERSION: import.meta.env.VITE_VERSION,
+  AUTHOR: import.meta.env.VITE_AUTHOR,
+  PUBLISHED: import.meta.env.VITE_PUBLISHED,
+};
+
 export const BTN_5 = ["btn", "btn-5"];
 export const BTN_PRI_5 = ["btn", "btn-primary", "btn-5"];
 export const BTN_INFO_5 = ["btn", "btn-info", "btn-5"];
