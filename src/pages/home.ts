@@ -10,10 +10,14 @@ home.content = () =>
 <div class="section">
   <h1 class="${classes(TITLE_1)}">
     <span class="${classes("capitailze")}">wiki</span>
-    <span class="${classes()}">mson</span>
   </h1>
+  <p>
+    기술관련 정보를 정리하는 개인 위키 페이지입니다.
+  </p>
+  <!--
+  ${new Placeholder(0, 300).toHTML()}
+  -->
 </div>
-${new Placeholder(0, 300).toHTML()}
 
 <div class="section">
   <h2 class="${classes(TITLE_2)}">Most Recent Wiki</h2>
@@ -22,16 +26,27 @@ ${new Placeholder(0, 300).toHTML()}
     ?.wikis.slice(0, 5)
     .map(
       (child) =>
-        `<div>
-      <p>Title: ${child.name}</p>
-      <p>Author: ${child.author}</p>
-      <p>Creation Time: ${getLocaleTime(child.created_at)}</p>
-    </div>`
-    )}
+        `<div clickable onclick="location='${child.parent.path + child.path}'">
+          <p>Title: ${child.name}</p>
+          <p>Author: ${child.author}</p>
+          <p>Creation Time: ${getLocaleTime(child.created_at)}</p>
+        </div>`
+    )
+    .join("<br />")}
 </div>
 <div class="section">
   <h2 class="${classes(TITLE_2)}">Keywords</h2>
   <div class="keyword-container">
+      ${[
+        ...new Set(
+          home.router.pathManager
+            .get("/wiki")
+            ?.wikis.map((wiki) => [wiki.category, ...wiki.tags])
+            .flat(1)
+        ),
+      ]
+        .map((str) => `<div class="category-badge">${str}</div>`)
+        .join("")}
       <!-- Keywords will be dynamically added here -->
   </div>
 </div>

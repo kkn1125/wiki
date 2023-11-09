@@ -10,12 +10,13 @@
 
   main.main-content {
     /* Changed to a slightly lighter gray color */
-    background-color: #f5f5f5;
+    background-color: #ffffff;
     border: 1px solid #ccc;
     border-radius: 10px;
     padding: 20px;
     width: 80%;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    position: relative;
   }
 
   .wiki-book {
@@ -69,7 +70,7 @@
     .category-badge {
       display: inline-block;
       padding: 0.5rem 1rem; /* Padding for space inside the badge */
-      margin-right: 1rem; /* 1rem margin between badges */
+      // margin-right: 1rem; /* 1rem margin between badges */
       background: #4141a1; /* Dark blue background color */
       color: #fff; /* White text color */
       border-radius: 0.5rem; /* Rounded corners */
@@ -156,7 +157,7 @@
       width: 100%;
       border-bottom: 1px dashed rgba(128, 128, 128, 0.8); /* Adjusted to a dashed line with 80% brightness */
     }
-    &:last-child::after {
+    &:last-of-type::after {
       display: none; /* Hide the separator line for the last section */
     }
   }
@@ -172,6 +173,7 @@
   .keyword-container {
     display: flex;
     flex-wrap: wrap;
+    gap: 0.5rem;
   }
 
   .keyword {
@@ -181,6 +183,54 @@
     border-radius: 5px;
     padding: 5px 10px;
     margin: 5px;
+  }
+
+  .fade-out-top,
+  .fade-out-bottom {
+    pointer-events: none;
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 50px; /* Adjust the height as needed */
+    transition: opacity 0.5s ease;
+    z-index: 1;
+  }
+
+  .fade-out-top {
+    top: 40px;
+    background: linear-gradient(to bottom, white, transparent);
+  }
+
+  .fade-out-bottom {
+    bottom: 20px;
+    background: linear-gradient(to bottom, transparent, white);
+  }
+
+  /* Show fade-out effects when scrolling near the top or bottom */
+  &.scrolling {
+    .fade-out-top,
+    .fade-out-bottom {
+      opacity: 1;
+    }
+  }
+
+  .pagination {
+    display: flex;
+    justify-content: center; /* Center align the buttons */
+    list-style: none;
+    padding: 0;
+    margin-bottom: 10rem;
+
+    button {
+      width: 40px; /* Adjust the button size as needed */
+      height: 40px; /* Adjust the button size as needed */
+      border: 1px solid rgba(128, 128, 128, 0.7); /* 70% bright gray border */
+      border-radius: 50%; /* Circular shape */
+      background: transparent; /* Transparent background */
+      color: #000; /* Black text color */
+      cursor: pointer;
+      margin: 0 1rem; /* 1rem margin between buttons */
+    }
   }
 
   // main {
@@ -225,5 +275,21 @@
     transform: translateX(-50%);
     display: flex;
     justify-content: center;
+    z-index: 100;
+  }
+
+  [clickable] {
+    border: 1px solid #ccc;
+    padding: 0.5rem 1.8rem;
+
+    cursor: pointer;
+    &:hover * {
+      color: #{$primary-color} !important;
+    }
+    transition: 150ms ease-in-out;
+    -webkit-transition: 150ms ease-in-out;
+    -moz-transition: 150ms ease-in-out;
+    -ms-transition: 150ms ease-in-out;
+    -o-transition: 150ms ease-in-out;
   }
 }

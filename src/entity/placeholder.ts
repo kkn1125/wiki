@@ -11,6 +11,7 @@ export default class Placeholder {
   constructor(width: number, height: number, alt?: string) {
     this.id = Placeholder.id++;
     this.image = new Image(width, height);
+    this.image.dataset.mode = "placeholder";
     this.image.alt = alt || "";
     this.width = this.image.width;
     this.height = this.image.height;
@@ -28,6 +29,12 @@ export default class Placeholder {
   }
 
   static getImageUrl(this: Placeholder | HTMLImageElement) {
+    if (
+      this instanceof HTMLImageElement &&
+      this.getAttribute("data-mode") !== "placeholder"
+    )
+      return this.src;
+
     const sizeText = `${this.width} ✕ ${this.height}`;
     const canvas = document.createElement("canvas") as HTMLCanvasElement;
     const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;

@@ -1,6 +1,7 @@
 import Page from "@/entity/page";
 import Router from "./router";
 import Wiki from "@/entity/wiki";
+import { getLocaleTime } from "@/util/tool";
 
 export default class Navigator {
   router: Router;
@@ -32,6 +33,8 @@ export default class Navigator {
 
     this.initialEventListeners();
     this.detectPathAndReplaceCurrentPage();
+
+    /* location change event */
     window.addEventListener(
       "locationchange",
       this.detectPathAndReplaceCurrentPage.bind(this)
@@ -58,7 +61,17 @@ export default class Navigator {
               .map(
                 (li) => `
               <li>
-              <a href="${li.parent.path + li.path}">${li.name}</a>
+              <a href="${li.parent.path + li.path}">
+                <span>
+                  ${li.name}
+                </span>,
+                <span>
+                  ${li.author}
+                </span>,
+                <span>
+                  ${getLocaleTime(li.created_at)}
+                </span>
+              </a>
               </li>`
               )
               .join("");
@@ -66,7 +79,15 @@ export default class Navigator {
         }
       }
     });
+
+    // this.detectHash();
+    // window.addEventListener("hashchange", this.detectHash.bind(this));
   }
+
+  // detectHash() {
+  //   const page = +location.hash.slice(1) || 1;
+  //   // this.autoRender();
+  // }
 
   to(path: string) {
     window.history.pushState({}, "", path);

@@ -5,7 +5,8 @@ import { home } from "./pages/home";
 import { notFoundPage } from "./pages/notfound";
 import { about } from "./pages/about";
 import { wiki } from "./pages/wiki";
-import { test } from "./pages/wikis/test";
+import { WebRTC } from "./pages/wikis/WebRTC";
+import { BinarySearch } from "./pages/wikis/binarysearch";
 
 declare global {
   interface Window {
@@ -23,7 +24,8 @@ router.route(about);
 router.route(notFoundPage);
 
 // wiki
-wiki.addWiki(test);
+wiki.addWiki(WebRTC);
+wiki.addWiki(BinarySearch);
 
 const navigator = new Navigator(router);
 

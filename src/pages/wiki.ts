@@ -11,8 +11,9 @@ import { classes, getLocaleTime } from "@/util/tool";
 
 export const wiki = new Page("wiki", "/wiki");
 wiki.created_at = new Date(2023, 10, 8);
-wiki.content = () =>
-  Page.Layout`
+wiki.content = () => {
+  const page = +location.hash?.slice(1) || 1;
+  return Page.Layout`
 <div class="section">
     <h2 class="${classes(TITLE_2, "text-gray")}">Search Wikis</h2>
     <input type="text" id="searchWiki" placeholder="Search Wikis">
@@ -21,44 +22,57 @@ wiki.content = () =>
     </div>
 </div>
 <div class="section">
-    <h2 class="${classes(TITLE_2, "text-gray")}">Categories</h2>
-    ${[...new Set(wiki.wikis)].map(
-      (child) => `<div class='category-badge'>${child.category}</div>`
-    )}
+    <h3 class="${classes(TITLE_3, "text-gray")}">Categories</h3>
+    <div class="keyword-container">
+      ${[...new Set(wiki.wikis)]
+        .map((child) => `<div class='category-badge'>${child.category}</div>`)
+        .join("")}
+    </div>
     <!-- Add more categories here -->
 </div>
 <div class="section">
-    <h2 class="${classes(TITLE_2, "text-gray")}">Recently Registered Wikis</h2>
+    <h3 class="${classes(TITLE_3, "text-gray")}">Recently Registered Wikis</h3>
     <ul>
-        ${wiki.wikis.map(
-          (child) =>
-            `<li>
+        ${wiki.wikis
+          .slice(0, 5)
+          .map(
+            (child) =>
+              `<li>
             <a href='${child.parent.path + child.path}'>${child.name}</a>, ${
-              child.author
-            }, ${getLocaleTime(child.created_at)}
+                child.author
+              }, ${getLocaleTime(child.created_at)}
           </li>`
-        )}
+          )
+          .join("")}
     </ul>
 </div>
 <div class="section">
-    <h2 class="${classes(TITLE_2, "text-gray")}">All Wikis</h2>
+    <h3 class="${classes(TITLE_3, "text-gray")}">All Wikis</h3>
     <ul>
-        ${wiki.wikis.map(
-          (child) =>
-            `<li>
+        ${wiki.wikis
+          .slice((page - 1) * 5, page * 5)
+          .map(
+            (child) =>
+              `<li>
               <a href='${child.parent.path + child.path}'>${child.name}</a>, ${
-              child.author
-            }, ${getLocaleTime(child.created_at)}
+                child.author
+              }, ${getLocaleTime(child.created_at)}
             </li>`
-        )}
+          )
+          .join("")}
         <!-- Display paginated list of wikis here -->
     </ul>
     <div class="pagination">
-        <button>1</button>
-        <button>2</button>
-        <button>3</button>
-        <button>4</button>
-        <button>5</button>
+        ${new Array(Math.ceil(wiki.wikis.length / 5))
+          .fill(null)
+          .map(
+            (child, index) =>
+              `<button data-page="${index + 1}" onclick="location='#${
+                index + 1
+              }'">${index + 1}</button>`
+          )
+          .join("")}
     </div>
 </div>
 `.trim();
+};

@@ -33,9 +33,13 @@ export default class BasePage {
 
     return `
     <main class="main-content">
+      <!-- Top Fade Out Effect -->
+      <div class="fade-out-top"></div>
       <div class="wiki-book">
         ${temp}
       </div>
+      <!-- Bottom Fade Out Effect -->
+      <div class="fade-out-bottom"></div>
     </main>`;
   }
 }
