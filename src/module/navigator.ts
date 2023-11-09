@@ -1,5 +1,6 @@
 import Page from "@/entity/page";
 import Router from "./router";
+import Wiki from "@/entity/wiki";
 
 export default class Navigator {
   router: Router;
@@ -35,6 +36,36 @@ export default class Navigator {
       "locationchange",
       this.detectPathAndReplaceCurrentPage.bind(this)
     );
+
+    /* 검색창 기능 */
+    window.addEventListener("keyup", (e) => {
+      const target = e.target as HTMLInputElement;
+      if (target && target.id === "searchWiki") {
+        const value = target.value;
+        const result = document.querySelector("#searchResults");
+        const wiki = this.router.pathManager.get("/wiki");
+        if (wiki) {
+          const list = wiki.wikis.filter(
+            (child) =>
+              value &&
+              (child.name.includes(value) ||
+                child.path.includes(value) ||
+                child.content().includes(value) ||
+                child.category.includes(value))
+          );
+          if (result) {
+            result.innerHTML = list
+              .map(
+                (li) => `
+              <li>
+              <a href="${li.parent.path + li.path}">${li.name}</a>
+              </li>`
+              )
+              .join("");
+          }
+        }
+      }
+    });
   }
 
   to(path: string) {
@@ -43,7 +74,6 @@ export default class Navigator {
 
   detectPathAndReplaceCurrentPage() {
     const page = this.findPage(location.pathname);
-    console.log(page, location.pathname);
     if (page) {
       this.stackHistory(page);
       this.swapPage(page);
@@ -58,7 +88,18 @@ export default class Navigator {
   findPage(key: string): Page | null {
     const isPath = key.startsWith("/");
     const page = this.router[isPath ? "pathManager" : "nameManager"].get(key);
-    if (page) return page;
+    if (page) {
+      return page;
+    } else if (key.startsWith("/wiki")) {
+      const path = key.slice(5);
+      const wiki = this.router.pathManager.get("/wiki");
+      if (wiki) {
+        const wikiPage = wiki.wikis.find((child) => child.path === path);
+        if (wikiPage) {
+          return wikiPage;
+        }
+      }
+    }
     return null;
   }
 
@@ -77,9 +118,21 @@ export default class Navigator {
 
   autoRender() {
     if (this.currentPage) {
-      this.router.renderByPath(this.currentPage.path);
+      if (this.currentPage instanceof Wiki) {
+        if (this.currentPage.parent) {
+          this.router.renderByPath(
+            this.currentPage.parent.path + this.currentPage.path
+          );
+        }
+      } else {
+        this.router.renderByPath(this.currentPage.path);
+      }
     } else {
       this.router.renderByName("404");
     }
+  }
+
+  static htmlTo(path: string) {
+    return `onclick="window.wiki.navigator.to('${path}')"`;
   }
 }

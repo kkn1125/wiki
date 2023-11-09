@@ -2,6 +2,8 @@ import Page from "@/entity/page";
 import Placeholder from "@/entity/placeholder";
 import { notFoundPage } from "@/pages/notfound";
 import { APP } from "@/util/global";
+import Navigator from "./navigator";
+import { globalRemoteController } from "@/util/tool";
 
 export default class Router {
   pathManager: Map<string, Page> = new Map();
@@ -13,6 +15,7 @@ export default class Router {
   }
 
   route(page: Page) {
+    page.router = this;
     this.pathManager.set(page.path, page);
     this.nameManager.set(page.name, page);
   }
@@ -44,7 +47,14 @@ export default class Router {
     });
   }
   renderByPath(path: string) {
-    const page = this.pathManager.get(path);
+    let page: Page | undefined = undefined;
+    if (path.startsWith("/wiki") && path !== "/wiki") {
+      const wiki = this.pathManager.get("/wiki");
+      page = wiki?.wikis.find((child) => child.path === path.slice(5));
+      // page = this.pathManager.get(path);
+    } else {
+      page = this.pathManager.get(path);
+    }
     if (page) {
       this.clearApp();
       const { body } = new DOMParser().parseFromString(

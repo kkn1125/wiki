@@ -4,6 +4,8 @@ import Router from "./module/router";
 import { home } from "./pages/home";
 import { notFoundPage } from "./pages/notfound";
 import { about } from "./pages/about";
+import { wiki } from "./pages/wiki";
+import { test } from "./pages/wikis/test";
 
 declare global {
   interface Window {
@@ -16,9 +18,12 @@ declare global {
 
 const router = new Router();
 router.route(home);
+router.route(wiki);
 router.route(about);
 router.route(notFoundPage);
-console.log(router);
+
+// wiki
+wiki.addWiki(test);
 
 const navigator = new Navigator(router);
 

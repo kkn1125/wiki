@@ -2,6 +2,16 @@ html,
 body {
   margin: 0;
   height: 100%;
+  overflow: hidden;
+  font-size: 12px;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #666; /* Adjusted to a darker gray color (40% brightness) */
+  color: #000; /* Changed text color to black */
+  margin: 0;
+  padding: 0;
 }
 
 @for $i from 1 to 6 {

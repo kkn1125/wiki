@@ -1,23 +1,18 @@
-import Page from "@/entity/page";
-import {
-  BTN_5,
-  TITLE_1,
-  TITLE_2,
-  TITLE_3,
-  TITLE_4,
-  TITLE_5,
-} from "@/util/global";
+import Wiki from "@/entity/wiki";
+import { TITLE_2, WIKI } from "@/util/global";
 import { classes } from "@/util/tool";
 
-export const about = new Page("about", "/about");
-about.created_at = new Date(2023, 10, 8);
-about.content = () =>
-  Page.Layout`
+export const test = new Wiki("테스트 포스팅", "/test");
+test.category = "test";
+test.addTag("test1");
+test.addTag("test2");
+test.created_at = new Date(2023, 10, 9);
+test.content = () =>
+  Wiki.Layout`
 <div class="section">
-  <h2 class="${classes(TITLE_2)}">About</h2>
-  <p>Name: Mark</p>
-  <p>Email: mark@example.com</p>
-  <p>Phone: +1-123-456-7890</p>
+  <h2 class="${classes(TITLE_2)}">Test Wiki</h2>
+  <p>Name: ${WIKI.AUTHOR}</p>
+  <p>Email: ${WIKI.EMAIL}</p>
 </div>
 <div class="section">
   <h2 class="${classes(TITLE_2)}">Purpose</h2>

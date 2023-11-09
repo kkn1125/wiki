@@ -4,6 +4,7 @@ export const APP = document.querySelector<HTMLDivElement>(
 
 export const WIKI = {
   BRAND_NAME: import.meta.env.VITE_BRAND_NAME,
+  EMAIL: import.meta.env.VITE_EMAIL,
   VERSION: import.meta.env.VITE_VERSION,
   AUTHOR: import.meta.env.VITE_AUTHOR,
   PUBLISHED: import.meta.env.VITE_PUBLISHED,

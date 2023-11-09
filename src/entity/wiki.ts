@@ -1,9 +1,10 @@
 import Page from "./page";
 
-export default class Post extends Page {
+export default class Wiki extends Page {
   category: string = "";
   tags: string[] = [];
   cover: string = "";
+  parent!: Page;
 
   constructor(name: string, path: string);
   constructor(name: string, path: string, category: string, tags: string[]);
@@ -11,6 +12,10 @@ export default class Post extends Page {
     super(name, path);
     category && (this.category = category);
     tags && (this.tags = tags);
+  }
+
+  setParent(parent: Page) {
+    this.parent = parent;
   }
 
   addTag(tag: string) {

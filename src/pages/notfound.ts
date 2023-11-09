@@ -3,8 +3,8 @@ import { BTN_ERROR_5, BTN_PRI_5, TITLE_1, TITLE_2 } from "@/util/global";
 import { classes } from "@/util/tool";
 
 export const notFoundPage = new Page("404", "/404");
-
-notFoundPage.content = `
+notFoundPage.created_at = new Date(2023, 10, 8);
+notFoundPage.content = () => Page.Layout`
 <main>
   <h1 class="${classes(TITLE_2)}">Not Found</h1>
 
