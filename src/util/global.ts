@@ -21,3 +21,4 @@ export const TITLE_2 = ["title", "title-2"];
 export const TITLE_3 = ["title", "title-3"];
 export const TITLE_4 = ["title", "title-4"];
 export const TITLE_5 = ["title", "title-5"];
+export const wikiName = import.meta.env.DEV ? "/wiki/" : "/wiki/wiki/";

@@ -12,8 +12,9 @@ export default defineConfig(({ command, mode }) => {
     },
     server: {
       host: process.env.HOST,
-      port: +process.env.PORT || 3000,
+      port: +(process.env.PORT || 3000),
     },
+    base: process.env.NODE_ENV === "development" ? "/" : "/wiki/",
     resolve: {
       alias: [
         { find: "@", replacement: path.resolve("src") },

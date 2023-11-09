@@ -1,15 +1,9 @@
 import Page from "@/entity/page";
-import {
-  BTN_5,
-  TITLE_1,
-  TITLE_2,
-  TITLE_3,
-  TITLE_4,
-  TITLE_5,
-} from "@/util/global";
+import Navigator from "@/module/navigator";
+import { TITLE_2, TITLE_3 } from "@/util/global";
 import { classes, getLocaleTime } from "@/util/tool";
 
-export const wiki = new Page("wiki", "/wiki");
+export const wiki = new Page("wiki", "/wiki/");
 wiki.created_at = new Date(2023, 10, 8);
 wiki.content = () => {
   const page = +location.hash?.slice(1) || 1;
@@ -38,9 +32,11 @@ wiki.content = () => {
           .map(
             (child) =>
               `<li>
-            <a href='${child.parent.path + child.path}'>${child.name}</a>, ${
-                child.author
-              }, ${getLocaleTime(child.created_at)}
+            <a href='javascript:void(0)' ${Navigator.htmlTo(
+              child.parent.path + child.path
+            )}>${child.name}</a>, ${child.author}, ${getLocaleTime(
+                child.created_at
+              )}
           </li>`
           )
           .join("")}
@@ -54,9 +50,11 @@ wiki.content = () => {
           .map(
             (child) =>
               `<li>
-              <a href='${child.parent.path + child.path}'>${child.name}</a>, ${
-                child.author
-              }, ${getLocaleTime(child.created_at)}
+              <a href='javascript:void(0)' ${Navigator.htmlTo(
+                child.parent.path + child.path
+              )}>${child.name}</a>, ${child.author}, ${getLocaleTime(
+                child.created_at
+              )}
             </li>`
           )
           .join("")}
@@ -67,9 +65,9 @@ wiki.content = () => {
           .fill(null)
           .map(
             (child, index) =>
-              `<button data-page="${index + 1}" onclick="location='#${
-                index + 1
-              }'">${index + 1}</button>`
+              `<button data-page="${index + 1}" ${Navigator.htmlTo(
+                `#${index + 1}`
+              )}>${index + 1}</button>`
           )
           .join("")}
     </div>

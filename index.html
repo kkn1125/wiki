@@ -7,8 +7,31 @@
     <title>WIKI</title>
     <link rel="stylesheet" href="/src/assets/main.scss" lang="scss" />
   </head>
-  <body>
+  <body class="line-numbers">
     <div id="app" class="main-container"></div>
+    <div class="button-container">
+      <div
+        data-btn-path="/"
+        class="panel-item round-button"
+        onclick='window.wiki.navigator.to("/")'
+      >
+        home
+      </div>
+      <div
+        data-btn-path="/wiki/"
+        class="panel-item round-button"
+        onclick='window.wiki.navigator.to("/wiki/")'
+      >
+        wiki
+      </div>
+      <div
+        data-btn-path="/about/"
+        class="panel-item round-button"
+        onclick='window.wiki.navigator.to("/about/")'
+      >
+        about
+      </div>
+    </div>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

@@ -1,7 +1,7 @@
 import Page from "@/entity/page";
 import Router from "./router";
 import Wiki from "@/entity/wiki";
-import { getLocaleTime } from "@/util/tool";
+import { cleanSlash, getLocaleTime } from "@/util/tool";
 
 export default class Navigator {
   router: Router;
@@ -46,7 +46,7 @@ export default class Navigator {
       if (target && target.id === "searchWiki") {
         const value = target.value;
         const result = document.querySelector("#searchResults");
-        const wiki = this.router.pathManager.get("/wiki");
+        const wiki = this.router.pathManager.get("/wiki/");
         if (wiki) {
           const list = wiki.wikis.filter(
             (child) =>
@@ -90,17 +90,37 @@ export default class Navigator {
   // }
 
   to(path: string) {
-    window.history.pushState({}, "", path);
+    window.history.pushState(
+      {},
+      "",
+      cleanSlash(import.meta.env.DEV ? path : "/wiki" + path)
+    );
   }
 
   detectPathAndReplaceCurrentPage() {
-    const page = this.findPage(location.pathname);
+    const page = this.findPage(
+      location.pathname.slice(import.meta.env.DEV ? 0 : 5)
+    );
+    // console.log(page, location.pathname.slice(import.meta.env.DEV ? 0 : 5));
     if (page) {
       this.stackHistory(page);
       this.swapPage(page);
+
+      document
+        .querySelectorAll(`[data-btn-path]`)
+        .forEach((el) => el.classList.remove("current-page"));
+      const pagePath = page instanceof Wiki ? page.parent.path : page.path;
+      const btn = document.querySelector(`[data-btn-path="${pagePath}"]`);
+      if (btn) {
+        btn.classList.add("current-page");
+      }
     } else {
       this.stackHistory(this.router.notFoundPage);
       this.swapPage(this.router.notFoundPage);
+      // console.log(
+      //   "페이지 없음",
+      //   location.pathname.slice(import.meta.env.DEV ? 0 : 5)
+      // );
     }
   }
 
@@ -111,9 +131,9 @@ export default class Navigator {
     const page = this.router[isPath ? "pathManager" : "nameManager"].get(key);
     if (page) {
       return page;
-    } else if (key.startsWith("/wiki")) {
+    } else if (key.startsWith("/wiki/")) {
       const path = key.slice(5);
-      const wiki = this.router.pathManager.get("/wiki");
+      const wiki = this.router.pathManager.get("/wiki/");
       if (wiki) {
         const wikiPage = wiki.wikis.find((child) => child.path === path);
         if (wikiPage) {
@@ -154,6 +174,6 @@ export default class Navigator {
   }
 
   static htmlTo(path: string) {
-    return `onclick="window.wiki.navigator.to('${path}')"`;
+    return `onclick="window.wiki.navigator.to('${cleanSlash(path)}')"`;
   }
 }

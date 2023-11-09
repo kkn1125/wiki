@@ -1,8 +1,8 @@
 import Wiki from "@/entity/wiki";
-import { TITLE_2, TITLE_3, TITLE_4 } from "@/util/global";
+import { TITLE_3 } from "@/util/global";
 import { classes } from "@/util/tool";
 
-export const WebRTC = new Wiki("WebRTC 관련", "/webrtc");
+export const WebRTC = new Wiki("WebRTC 관련", "/webrtc/");
 WebRTC.category = "javascript";
 WebRTC.addTag("webrtc");
 WebRTC.addTag("p2p");

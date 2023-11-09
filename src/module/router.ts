@@ -2,8 +2,9 @@ import Page from "@/entity/page";
 import Placeholder from "@/entity/placeholder";
 import { notFoundPage } from "@/pages/notfound";
 import { APP } from "@/util/global";
-import Navigator from "./navigator";
-import { globalRemoteController } from "@/util/tool";
+import { cleanSlash } from "@/util/tool";
+
+import Prism from "prismjs";
 
 export default class Router {
   pathManager: Map<string, Page> = new Map();
@@ -12,6 +13,15 @@ export default class Router {
 
   constructor() {
     this.route(this.notFoundPage);
+  }
+
+  printTree() {
+    const origin = [...this.pathManager.keys()];
+    const wikis =
+      this.pathManager
+        .get("/wiki/")
+        ?.wikis.map((wiki) => cleanSlash(wiki.parent.path + wiki.path)) || [];
+    import.meta.env.DEV && console.debug(origin.concat(wikis));
   }
 
   route(page: Page) {
@@ -45,15 +55,17 @@ export default class Router {
     document.querySelectorAll("img").forEach((img) => {
       new ResizeObserver(Placeholder.getImageUrl.bind(img)).observe(img);
     });
+    Prism.highlightAll();
   }
   renderByPath(path: string) {
+    const replacePaths = cleanSlash(path);
     let page: Page | undefined = undefined;
-    if (path.startsWith("/wiki") && path !== "/wiki") {
-      const wiki = this.pathManager.get("/wiki");
-      page = wiki?.wikis.find((child) => child.path === path.slice(5));
+    if (replacePaths.startsWith("/wiki/") && replacePaths !== "/wiki/") {
+      const wiki = this.pathManager.get("/wiki/");
+      page = wiki?.wikis.find((child) => child.path === replacePaths.slice(5));
       // page = this.pathManager.get(path);
     } else {
-      page = this.pathManager.get(path);
+      page = this.pathManager.get(replacePaths);
     }
     if (page) {
       this.clearApp();
@@ -72,6 +84,7 @@ export default class Router {
     document.querySelectorAll("img").forEach((img) => {
       new ResizeObserver(Placeholder.getImageUrl.bind(img)).observe(img);
     });
+    Prism.highlightAll();
   }
 
   private clearApp() {

@@ -1,6 +1,7 @@
 import { classes, getLocaleTime } from "@/util/tool";
 import Page from "./page";
 import { TITLE_2, TITLE_4 } from "@/util/global";
+import cc from "@/assets/svg/cc";
 
 type Link = {
   name: string;
@@ -83,6 +84,10 @@ export default class Wiki extends Page {
               <!-- Add your links here -->
           </ul>
         </div>
+        <div class="section">
+          ${cc}
+        </div>
+
       </div>
       <!-- Bottom Fade Out Effect -->
       <div class="fade-out-bottom"></div>

@@ -1,6 +1,7 @@
 import Page from "@/entity/page";
 import Placeholder from "@/entity/placeholder";
-import { BTN_PRI_5, TITLE_1, TITLE_2, TITLE_3, WIKI } from "@/util/global";
+import Navigator from "@/module/navigator";
+import { TITLE_1, TITLE_2, WIKI } from "@/util/global";
 import { classes, getLocaleTime } from "@/util/tool";
 
 export const home = new Page("home", "/");
@@ -22,11 +23,11 @@ home.content = () =>
 <div class="section">
   <h2 class="${classes(TITLE_2)}">Most Recent Wiki</h2>
   ${home.router.pathManager
-    .get("/wiki")
+    .get("/wiki/")
     ?.wikis.slice(0, 5)
     .map(
       (child) =>
-        `<div clickable onclick="location='${child.parent.path + child.path}'">
+        `<div clickable ${Navigator.htmlTo(child.parent.path + child.path)}>
           <p>Title: ${child.name}</p>
           <p>Author: ${child.author}</p>
           <p>Creation Time: ${getLocaleTime(child.created_at)}</p>
@@ -40,7 +41,7 @@ home.content = () =>
       ${[
         ...new Set(
           home.router.pathManager
-            .get("/wiki")
+            .get("/wiki/")
             ?.wikis.map((wiki) => [wiki.category, ...wiki.tags])
             .flat(1)
         ),

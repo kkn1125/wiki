@@ -12,6 +12,7 @@ body {
   color: #000; /* Changed text color to black */
   margin: 0;
   padding: 0;
+  user-select: none;
 }
 
 @for $i from 1 to 6 {

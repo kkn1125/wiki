@@ -1,16 +1,8 @@
 import Page from "@/entity/page";
-import {
-  BTN_5,
-  TITLE_1,
-  TITLE_2,
-  TITLE_3,
-  TITLE_4,
-  TITLE_5,
-  WIKI,
-} from "@/util/global";
+import { TITLE_2, WIKI } from "@/util/global";
 import { classes } from "@/util/tool";
 
-export const about = new Page("about", "/about");
+export const about = new Page("about", "/about/");
 about.created_at = new Date(2023, 10, 8);
 about.content = () =>
   Page.Layout`

@@ -1,6 +1,6 @@
 import Router from "@/module/router";
 import { WIKI } from "@/util/global";
-import { globalRemoteController } from "@/util/tool";
+// import { globalRemoteController } from "@/util/tool";
 
 export default class BasePage {
   name: string;
@@ -14,7 +14,8 @@ export default class BasePage {
     this.name = name;
     this.path = path;
 
-    this.setGlobal(globalRemoteController());
+    /* global buttom remote controller */
+    // this.setGlobal(globalRemoteController());
   }
 
   setGlobal(content: string) {
