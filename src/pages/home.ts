@@ -2,7 +2,7 @@ import Page from "@/entity/page";
 import Placeholder from "@/entity/placeholder";
 import Navigator from "@/module/navigator";
 import { TITLE_1, TITLE_2, WIKI } from "@/util/global";
-import { classes, getLocaleTime } from "@/util/tool";
+import { classes, getLocaleTime, timeFormat } from "@/util/tool";
 
 export const home = new Page("home", "/");
 home.created_at = new Date(2023, 10, 8);
@@ -30,7 +30,10 @@ home.content = () =>
         `<div clickable ${Navigator.htmlTo(child.parent.path + child.path)}>
           <p>Title: ${child.name}</p>
           <p>Author: ${child.author}</p>
-          <p>Creation Time: ${getLocaleTime(child.created_at)}</p>
+          <p>Creation Time: ${timeFormat(
+            "YYYY-MM-dd HH:mm",
+            child.created_at
+          )}</p>
         </div>`
     )
     .join("<br />")}

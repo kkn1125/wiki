@@ -40,48 +40,107 @@ export default class Navigator {
       this.detectPathAndReplaceCurrentPage.bind(this)
     );
 
+    window.addEventListener("keydown", this.handleExitResults.bind(this));
+
+    /* 검색창 포커스 시 이미 검색한 키워드로 다시 결과창 출력 */
+    window.addEventListener("focusin", this.handleFocusSearchInput.bind(this));
+
+    /* 검색창, 결과창 외 클릭 시 결과창 닫기 */
+    /* focusout은 사라진 후 링크 클릭되서 시간차로 오작동 */
+    window.addEventListener("mousedown", this.handleMouseDown.bind(this));
+
     /* 검색창 기능 */
-    window.addEventListener("keyup", (e) => {
-      const target = e.target as HTMLInputElement;
-      if (target && target.id === "searchWiki") {
-        const value = target.value;
-        const result = document.querySelector("#searchResults");
-        const wiki = this.router.pathManager.get("/wiki/");
-        if (wiki) {
-          const list = wiki.wikis.filter(
-            (child) =>
-              value &&
-              (child.name.includes(value) ||
-                child.path.includes(value) ||
-                child.content().includes(value) ||
-                child.category.includes(value))
-          );
-          if (result) {
-            result.innerHTML = list
-              .map(
-                (li) => `
-              <li>
-              <a href="${li.parent.path + li.path}">
-                <span>
-                  ${li.name}
-                </span>,
-                <span>
-                  ${li.author}
-                </span>,
-                <span>
-                  ${getLocaleTime(li.created_at)}
-                </span>
-              </a>
-              </li>`
-              )
-              .join("");
-          }
-        }
-      }
-    });
+    window.addEventListener("keyup", this.handleDisplayResult.bind(this));
 
     // this.detectHash();
     // window.addEventListener("hashchange", this.detectHash.bind(this));
+  }
+
+  private handleExitResults(e: KeyboardEvent) {
+    const key = e.key;
+    if (key === "Escape") {
+      const wikiInput = document.querySelector(
+        "#searchWiki"
+      ) as HTMLInputElement;
+      const results = document.querySelector("#searchResults");
+      if (results) {
+        wikiInput.blur();
+        results.innerHTML = "";
+      }
+    }
+  }
+
+  private handleMouseDown(e: MouseEvent) {
+    const inputOrResult = e.target as HTMLInputElement | HTMLDivElement;
+    if (
+      !(
+        inputOrResult.closest("#searchWiki") ||
+        inputOrResult.closest("#searchResults")
+      )
+    ) {
+      const results = document.querySelector("#searchResults");
+      if (results) results.innerHTML = "";
+    }
+  }
+
+  // private handleFocusSearchInputOut(e: FocusEvent) {
+  //   const target = e.target as HTMLInputElement;
+  //   if (target.id === "searchWiki") {
+  //     const result = document.querySelector("#searchResults");
+  //     if (result) {
+  //       result.innerHTML = "";
+  //     }
+  //   }
+  // }
+
+  private handleFocusSearchInput(e: FocusEvent) {
+    const target = e.target as HTMLInputElement;
+    if (target.id === "searchWiki") {
+      this.handleDisplayResult(e as unknown as KeyboardEvent);
+    }
+  }
+
+  private handleDisplayResult(e: KeyboardEvent) {
+    const target = e.target as HTMLInputElement;
+    if (target && target.id === "searchWiki") {
+      const value = target.value;
+      const result = document.querySelector("#searchResults");
+      const wiki = this.router.pathManager.get("/wiki/");
+      if (wiki) {
+        const list = wiki.wikis.filter(
+          (child) =>
+            value &&
+            (child.name.includes(value) ||
+              child.path.includes(value) ||
+              child.content().includes(value) ||
+              child.category.includes(value))
+        );
+        if (result) {
+          result.innerHTML =
+            `<span>results: (${list.length})</span>` +
+            list
+              .map(
+                (li) => `
+            <span>
+            <a href="javascript:void(0);" ${Navigator.htmlTo(
+              li.parent.path + li.path
+            )}>
+              <span>
+                ${li.name}
+              </span>,
+              <span>
+                ${li.author}
+              </span>,
+              <span>
+                ${getLocaleTime(li.created_at)}
+              </span>
+            </a>
+            </span>`
+              )
+              .join("");
+        }
+      }
+    }
   }
 
   // detectHash() {

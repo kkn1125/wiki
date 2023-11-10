@@ -167,6 +167,13 @@ $btn-hover-opacity: 80;
   @include d-flex;
 }
 
+.justify-content-center {
+  justify-content: center;
+}
+.align-items-center {
+  align-items: center;
+}
+
 /* colors */
 @include breakpoint-set("text-primary") {
   @include color-set("text", $primary-color) {
@@ -261,4 +268,4 @@ $btn-hover-opacity: 80;
   }
 }
 
-@import "page.scss";
+@import "page";

@@ -1,98 +1,147 @@
 #app {
   height: inherit;
+  width: 100%;
+
+  @include kor-font;
 
   &.main-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+    // width: inherit;
     height: 100vh;
   }
 
   main.main-content {
     /* Changed to a slightly lighter gray color */
     background-color: #ffffff;
-    border: 1px solid #ccc;
-    border-radius: 10px;
     padding: 20px;
-    width: 80%;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     position: relative;
-  }
 
-  .wiki-book {
-    margin-top: 20px;
-    padding: 20px;
-    border-radius: 10px;
-    overflow: auto;
-    height: 80vh;
-
-    /* Scroll Styles */
-    &::-webkit-scrollbar {
-      width: 10px; /* Scroll bar width */
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background: rgba(
-        128,
-        128,
-        128,
-        0.5
-      ); /* 50% bright gray for thumb color */
-      border-radius: 0.3rem; /* Rounded thumb */
-    }
-
-    &::-webkit-scrollbar-track {
-      background: transparent; /* Transparent track color */
-    }
-
-    .search-results {
-      max-height: 450px;
-      overflow-y: auto;
-      padding: 10px;
-      margin-top: 10px;
-    }
-
-    #searchWiki {
+    .fade-out-top,
+    .fade-out-bottom {
+      pointer-events: none;
+      position: absolute;
+      left: 0;
       width: 100%;
-      border: 1px solid rgba(128, 128, 128, 0.7); /* 70% bright gray border */
-      border-radius: 0; /* No rounding */
-      // height: 1.5em; /* 1.5 times font size */
-      height: 2.5em; /* 2.5 times font size for height */
-      transition: box-shadow 0.15s; /* Smooth transition for box-shadow */
+      height: 50px; /* Adjust the height as needed */
+      transition: opacity 0.5s ease;
+      z-index: 1;
+    }
 
-      &:hover,
-      &:focus {
-        box-shadow: 0 0 4px rgba(0, 0, 0, 0.5); /* 3-4px shadow on hover/focus */
+    .fade-out-top {
+      top: 40px;
+      background: linear-gradient(to bottom, white, transparent);
+    }
+
+    .fade-out-bottom {
+      bottom: 20px;
+      background: linear-gradient(to bottom, transparent, white);
+    }
+
+    .wiki-book {
+      margin-top: 20px;
+      padding: 20px;
+      border-radius: 10px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      height: 80vh;
+
+      /* Scroll Styles */
+      &::-webkit-scrollbar {
+        width: 10px; /* Scroll bar width */
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: rgba(
+          128,
+          128,
+          128,
+          0.5
+        ); /* 50% bright gray for thumb color */
+        border-radius: 0.3rem; /* Rounded thumb */
+      }
+
+      &::-webkit-scrollbar-track {
+        background: transparent; /* Transparent track color */
+      }
+
+      .search-results {
+        max-height: 450px;
+        overflow-y: auto;
+        padding: 10px;
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+        gap: 0.25em;
+      }
+
+      #searchWiki {
+        // width: 100%;
+        border: 1px solid rgba(128, 128, 128, 0.7); /* 70% bright gray border */
+        border-radius: 0; /* No rounding */
+        height: 2.5em; /* 2.5 times font size for height */
         transition: box-shadow 0.15s; /* Smooth transition for box-shadow */
+        outline: none;
+        @include px(2);
+
+        &:hover,
+        &:focus {
+          box-shadow: 0 0 4px rgba(0, 0, 0, 0.5); /* 3-4px shadow on hover/focus */
+          transition: box-shadow 0.15s; /* Smooth transition for box-shadow */
+        }
+      }
+
+      .category-badge {
+        display: inline-block;
+        padding: 0.5rem 1rem; /* Padding for space inside the badge */
+        // margin-right: 1rem; /* 1rem margin between badges */
+        background: #4141a1; /* Dark blue background color */
+        color: #fff; /* White text color */
+        @include border-radius(0.5rem); /* Rounded corners */
+        cursor: pointer;
+      }
+
+      .section {
+        display: flex;
+        flex-direction: column;
+        // margin: 20px 0;
+        @include mx(0);
+        @include my(7);
+        position: relative;
+
+        &:first-of-type {
+          @include mt(0);
+        }
+        &:last-of-type {
+          @include mb(0);
+        }
+
+        .keyword-container {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 0.5rem;
+          .keyword {
+            background-color: #555;
+            color: #fff;
+            border: 1px solid #444;
+            border-radius: 5px;
+            padding: 5px 10px;
+            margin: 5px;
+          }
+        }
+
+        blockquote {
+          border-left: 7px solid $info-color;
+          margin: 0;
+          @include px(3);
+          @include py(3);
+          background-color: #{$info-color}56;
+          @include my(3);
+        }
       }
     }
-
-    .category-badge {
-      display: inline-block;
-      padding: 0.5rem 1rem; /* Padding for space inside the badge */
-      // margin-right: 1rem; /* 1rem margin between badges */
-      background: #4141a1; /* Dark blue background color */
-      color: #fff; /* White text color */
-      border-radius: 0.5rem; /* Rounded corners */
-      cursor: pointer;
-    }
   }
-
-  // .round-button {
-  /* Adjusted the button spacing to 1rem */
-  //   margin: 0 1rem;
-  //   background-color: #555;
-  //   color: #fff;
-  //   border: 1px solid #444;
-  //   border-radius: 50%;
-  //   width: 60px;
-  //   height: 60px;
-  //   display: flex;
-  //   align-items: center;
-  //   justify-content: center;
-  //   text-transform: uppercase;
-  //   cursor: pointer;
-  // }
 
   .icon {
     fill: #fff;
@@ -100,71 +149,8 @@
     height: 40px;
   }
 
-  .section {
-    margin: 20px 0;
-    position: relative;
-    &::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: -10px; /* Adjust as needed for the separator line */
-      width: 100%;
-      border-bottom: 1px dashed rgba(128, 128, 128, 0.8); /* Adjusted to a dashed line with 80% brightness */
-    }
-    &:last-of-type::after {
-      display: none; /* Hide the separator line for the last section */
-    }
-  }
-
-  // h2 {
-  //   color: #000; /* Set the section header text color to black */
-  // }
-
   p {
     color: #444; /* Set the paragraph text color to a darker gray */
-  }
-
-  .keyword-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    .keyword {
-      background-color: #555;
-      color: #fff;
-      border: 1px solid #444;
-      border-radius: 5px;
-      padding: 5px 10px;
-      margin: 5px;
-    }
-  }
-
-  .fade-out-top,
-  .fade-out-bottom {
-    pointer-events: none;
-    position: absolute;
-    left: 0;
-    width: 100%;
-    height: 50px; /* Adjust the height as needed */
-    transition: opacity 0.5s ease;
-    z-index: 1;
-  }
-
-  .fade-out-top {
-    top: 40px;
-    background: linear-gradient(to bottom, white, transparent);
-  }
-
-  .fade-out-bottom {
-    bottom: 20px;
-    background: linear-gradient(to bottom, transparent, white);
-  }
-
-  /* Show fade-out effects when scrolling near the top or bottom */
-  &.scrolling {
-    .fade-out-top,
-    .fade-out-bottom {
-      opacity: 1;
-    }
   }
 
   .pagination {
@@ -186,42 +172,6 @@
     }
   }
 
-  // main {
-  //   position: relative;
-  //   display: flex;
-  //   align-items: center;
-  //   justify-content: center;
-  //   margin: auto;
-  //   width: 90vw;
-  //   height: inherit;
-
-  //   .page-wrap {
-  //     overflow: auto;
-  //     border: 1px solid $gray-color;
-  //     height: 80vh;
-  //     width: 100%;
-  //     @include p(3);
-  //   }
-  // }
-  // .bottom-panel {
-  //   position: fixed;
-  //   bottom: 15px;
-  //   left: 50%;
-  //   @include translate(-50%, 0);
-  //   @include d-flex;
-  //   gap: 1rem;
-
-  //   .panel-item {
-  //     width: 50px;
-  //     height: 50px;
-  //     background-color: $primary-color;
-  //     @include d-flex;
-  //     justify-content: center;
-  //     align-items: center;
-  //     @include border-radius(50%);
-  //   }
-  // }
-
   [clickable] {
     border: 1px solid #ccc;
     padding: 0.5rem 1.8rem;
@@ -240,28 +190,24 @@
 
 .button-container {
   position: fixed;
-  bottom: 30px; /* Increased the distance from the bottom to 30px */
+  bottom: 15px;
+  /*Increasedthedistancefromthebottomto30px*/
   left: 50%;
-  transform: translateX(-50%);
+  @include translate(-50%, 0%);
   display: flex;
   justify-content: center;
   z-index: 100;
   padding: 1rem;
   padding-bottom: 2em;
   background-color: $white-color;
-  border: 1px solid #{$gray-color}56;
+  //border: 1px solid #;
+  box-shadow: 0 0 1rem 0 #{$gray-color}56;
   @include border-radius(1rem);
+
   .round-button {
     color: $gray-color;
     // color: white; /* Text color set to white for visibility */
-    background: linear-gradient(
-      -45deg,
-      #afeeee,
-      #da70d6,
-      #afeeee,
-      #da70d6
-    ); /* Pastel tones of blue and magenta */
-    background-size: 300px, 300px;
+
     border: none;
     border-radius: 50%;
     width: 60px;
@@ -272,17 +218,26 @@
     text-transform: uppercase;
     cursor: pointer;
     margin: 0 1rem;
-    &:hover {
+
+    background: #fff;
+
+    &:hover,
+    &.current-page {
       color: $white-color;
       animation: gradientFlow 3s linear infinite,
         increaseSaturation 0.15s linear;
       filter: saturate(130%); /* 30% increase in saturation on hover */
+      background: linear-gradient(
+        -45deg,
+        #afeeee,
+        #da70d6,
+        #afeeee,
+        #da70d6
+      ); /* Pastel tones of blue and magenta */
+      background-size: 300px, 300px;
     }
-    transition: filter 0.2s, background 0.15s, box-shadow 0.15s;
-    -webkit-transition: filter 0.2s, background 0.15s, box-shadow 0.15s;
-    -moz-transition: filter 0.2s, background 0.15s, box-shadow 0.15s;
-    -ms-transition: filter 0.2s, background 0.15s, box-shadow 0.15s;
-    -o-transition: filter 0.2s, background 0.15s, box-shadow 0.15s;
+
+    @include transition(filter 0.2s, box-shadow 0.15s, background 0.35s);
   }
 
   @keyframes gradientFlow {
@@ -310,6 +265,6 @@
   }
 }
 
-.current-page {
-  box-shadow: 0 0 1rem 0 #c62d46;
-}
+// .current-page {
+//   box-shadow: 0 0 1rem 0 #c62d46;
+// }

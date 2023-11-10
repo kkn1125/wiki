@@ -177,3 +177,10 @@ $breakpoint-xl: 1280px; // large desktop
   -ms-transform: translate($x, $y);
   -o-transform: translate($x, $y);
 }
+@mixin transition($values...) {
+  transition: $values;
+  -webkit-transition: $values;
+  -moz-transition: $values;
+  -ms-transition: $values;
+  -o-transition: $values;
+}

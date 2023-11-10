@@ -1,6 +1,4 @@
 import Wiki from "@/entity/wiki";
-import { TITLE_3 } from "@/util/global";
-import { classes } from "@/util/tool";
 
 export const WebRTC = new Wiki("WebRTC 관련", "/webrtc/");
 WebRTC.category = "javascript";
@@ -13,13 +11,10 @@ WebRTC.addLink({
   path: "https://www.naver.com",
   target: "_blank",
 });
-WebRTC.created_at = new Date(2023, 10, 9);
+WebRTC.created_at = new Date("2023-11-9 15:41:25");
 WebRTC.content = () =>
   Wiki.Layout.bind(WebRTC)`
-<div class="section">
-  <h3 class="${classes(TITLE_3)}">Content</h3>
-  <p>This is the content of the wiki detail page. It can be quite long, and you can scroll to read more.</p>
-  <p>More content goes here...</p>
-  <!-- Add your content here -->
-</div>
+### Content
+
+This is the content of the wiki detail page. It can be quite long, and you can scroll to read more.
 `.trim();

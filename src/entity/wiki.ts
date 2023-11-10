@@ -2,6 +2,36 @@ import { classes, getLocaleTime } from "@/util/tool";
 import Page from "./page";
 import { TITLE_2, TITLE_4 } from "@/util/global";
 import cc from "@/assets/svg/cc";
+import MarkdownIt from "markdown-it";
+import markdownItAttrs from "markdown-it-attrs";
+
+const mdParser = new MarkdownIt();
+
+// mdParser.use(markdownCustomBlock, {
+//   img(raw) {
+//     console.log(123);
+//     const [index, alt, width, url] = raw.split("#");
+//     return `<figure id="fig${index}">
+//   <img width='${width}' src="${url}"/>
+//   <figcaption>Fig ${index}: ${alt}</figcaption>
+// </figure>`;
+//   },
+// });
+mdParser.renderer.rules.image = function (tokens, idx, options, env, slf) {
+  const token = tokens[idx];
+  token.attrSet("loading", "lazy");
+  return `<figure class='img-data d-flex flex-column'>
+  ${slf.renderToken(tokens, idx, options)}
+  <figcaption>${tokens[0].content}</figcaption>
+</figure>`;
+};
+
+mdParser.use(markdownItAttrs, {
+  // optional, these are default options
+  leftDelimiter: "{",
+  rightDelimiter: "}",
+  allowedAttributes: [], // empty array = all attributes are allowed
+});
 
 type Link = {
   name: string;
@@ -62,14 +92,19 @@ export default class Wiki extends Page {
           <h2 class="${classes(TITLE_2)}">${this.name}</h2>
           <p>Author: ${this.author}</p>
           <p>Creation Time: ${getLocaleTime(this.created_at)}</p>
-          <p>tags: 
-            <div class="keyword-container">
+          <p class="keyword-container align-items-center">
+            category <span class="category-badge">${this.category}</span>
+          </p>
+          <p class="keyword-container align-items-center">
+            tags
             ${this.tags
               .map((tag) => `<span class="category-badge">${tag}</span>`)
-              .join("")}</p>
-            </div>
+              .join("")}
+          </p>
         </div>
-        ${temp}
+        <div class="section">
+        ${mdParser.render(temp)}
+        </div>
         <div class="section">
           <h4 class="${classes(TITLE_4)}">Attached Links</h4>
           <ul>

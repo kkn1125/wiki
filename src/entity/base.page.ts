@@ -7,6 +7,7 @@ export default class BasePage {
   path: string;
   global: string = "";
   created_at!: Date;
+  updated_at!: Date;
   author: string = WIKI.AUTHOR as string;
   router!: Router;
 

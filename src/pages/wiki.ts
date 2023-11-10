@@ -1,22 +1,16 @@
 import Page from "@/entity/page";
 import Navigator from "@/module/navigator";
-import { TITLE_2, TITLE_3 } from "@/util/global";
-import { classes, getLocaleTime } from "@/util/tool";
+import { TITLE_3 } from "@/util/global";
+import { classes, timeFormat } from "@/util/tool";
 
 export const wiki = new Page("wiki", "/wiki/");
 wiki.created_at = new Date(2023, 10, 8);
 wiki.content = () => {
   const page = +location.hash?.slice(1) || 1;
   return Page.Layout`
+
 <div class="section">
-    <h2 class="${classes(TITLE_2, "text-gray")}">Search Wikis</h2>
-    <input type="text" id="searchWiki" placeholder="Search Wikis">
-    <div class="search-results" id="searchResults">
-        <!-- Search results will be displayed here -->
-    </div>
-</div>
-<div class="section">
-    <h3 class="${classes(TITLE_3, "text-gray")}">Categories</h3>
+    <h3 class="${classes(TITLE_3)}">Categories</h3>
     <div class="keyword-container">
       ${[...new Set(wiki.wikis)]
         .map((child) => `<div class='category-badge'>${child.category}</div>`)
@@ -25,7 +19,7 @@ wiki.content = () => {
     <!-- Add more categories here -->
 </div>
 <div class="section">
-    <h3 class="${classes(TITLE_3, "text-gray")}">Recently Registered Wikis</h3>
+    <h3 class="${classes(TITLE_3)}">Recently Registered Wikis</h3>
     <ul>
         ${wiki.wikis
           .slice(0, 5)
@@ -34,7 +28,8 @@ wiki.content = () => {
               `<li>
             <a href='javascript:void(0)' ${Navigator.htmlTo(
               child.parent.path + child.path
-            )}>${child.name}</a>, ${child.author}, ${getLocaleTime(
+            )}>${child.name}</a>, ${child.author}, ${timeFormat(
+                "YYYY-MM-dd HH:mm",
                 child.created_at
               )}
           </li>`
@@ -43,7 +38,7 @@ wiki.content = () => {
     </ul>
 </div>
 <div class="section">
-    <h3 class="${classes(TITLE_3, "text-gray")}">All Wikis</h3>
+    <h3 class="${classes(TITLE_3)}">All Wikis</h3>
     <ul>
         ${wiki.wikis
           .slice((page - 1) * 5, page * 5)
@@ -52,7 +47,8 @@ wiki.content = () => {
               `<li>
               <a href='javascript:void(0)' ${Navigator.htmlTo(
                 child.parent.path + child.path
-              )}>${child.name}</a>, ${child.author}, ${getLocaleTime(
+              )}>${child.name}</a>, ${child.author}, ${timeFormat(
+                "YYYY-MM-dd HH:mm",
                 child.created_at
               )}
             </li>`
