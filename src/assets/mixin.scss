@@ -94,6 +94,14 @@ $breakpoint-xl: 1280px; // large desktop
   display: none;
 }
 
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
 @mixin xs {
   @media (min-width: 0) {
     @content;

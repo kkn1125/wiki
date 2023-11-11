@@ -1,7 +1,10 @@
 import Page from "@/entity/page";
 import Router from "./router";
 import Wiki from "@/entity/wiki";
-import { cleanSlash, getLocaleTime } from "@/util/tool";
+import { cleanSlash, getLocaleTime, htmlTo } from "@/util/tool";
+import { APP } from "@/util/elements";
+import Prism from "prismjs";
+import Placeholder from "@/entity/placeholder";
 
 export default class Navigator {
   router: Router;
@@ -122,9 +125,7 @@ export default class Navigator {
               .map(
                 (li) => `
             <span>
-            <a href="javascript:void(0);" ${Navigator.htmlTo(
-              li.parent.path + li.path
-            )}>
+            <a href="javascript:void(0);" ${htmlTo(li.parent.path + li.path)}>
               <span>
                 ${li.name}
               </span>,
@@ -152,13 +153,13 @@ export default class Navigator {
     window.history.pushState(
       {},
       "",
-      cleanSlash(import.meta.env.DEV ? path : "/wiki" + path)
+      cleanSlash(process.env.NODE_ENV === "development" ? path : "/wiki" + path)
     );
   }
 
   detectPathAndReplaceCurrentPage() {
     const page = this.findPage(
-      location.pathname.slice(import.meta.env.DEV ? 0 : 5)
+      location.pathname.slice(process.env.NODE_ENV === "development" ? 0 : 5)
     );
     // console.log(page, location.pathname.slice(import.meta.env.DEV ? 0 : 5));
     if (page) {
@@ -220,19 +221,35 @@ export default class Navigator {
     if (this.currentPage) {
       if (this.currentPage instanceof Wiki) {
         if (this.currentPage.parent) {
-          this.router.renderByPath(
+          const page = this.router.renderByPath(
             this.currentPage.parent.path + this.currentPage.path
           );
+          this.renderView(page);
         }
       } else {
-        this.router.renderByPath(this.currentPage.path);
+        const page = this.router.renderByPath(this.currentPage.path);
+        this.renderView(page);
       }
     } else {
-      this.router.renderByName("404");
+      const page = this.router.renderByName("404");
+      this.renderView(page);
     }
   }
 
-  static htmlTo(path: string) {
-    return `onclick="window.wiki.navigator.to('${cleanSlash(path)}')"`;
+  renderView(page: Page) {
+    this.clearApp();
+    const { body } = new DOMParser().parseFromString(
+      page.render() + page.global,
+      "text/html"
+    );
+    APP.append(...[...body.children]);
+    document.querySelectorAll("img").forEach((img) => {
+      new ResizeObserver(Placeholder.getImageUrl.bind(img)).observe(img);
+    });
+    Prism.highlightAll();
+  }
+
+  private clearApp() {
+    APP.innerHTML = "";
   }
 }

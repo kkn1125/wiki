@@ -1,13 +1,9 @@
-export const APP = document.querySelector<HTMLDivElement>(
-  "#app"
-) as HTMLDivElement;
-
 export const WIKI = {
-  BRAND_NAME: import.meta.env.VITE_BRAND_NAME,
-  EMAIL: import.meta.env.VITE_EMAIL,
-  VERSION: import.meta.env.VITE_VERSION,
-  AUTHOR: import.meta.env.VITE_AUTHOR,
-  PUBLISHED: import.meta.env.VITE_PUBLISHED,
+  BRAND_NAME: process.env.VITE_BRAND_NAME,
+  EMAIL: process.env.VITE_EMAIL,
+  VERSION: process.env.VITE_VERSION,
+  AUTHOR: process.env.VITE_AUTHOR,
+  PUBLISHED: process.env.VITE_PUBLISHED,
 };
 
 export const BTN_5 = ["btn", "btn-5"];
@@ -21,4 +17,4 @@ export const TITLE_2 = ["title", "title-2"];
 export const TITLE_3 = ["title", "title-3"];
 export const TITLE_4 = ["title", "title-4"];
 export const TITLE_5 = ["title", "title-5"];
-export const wikiName = import.meta.env.DEV ? "/wiki/" : "/wiki/wiki/";
+export const wikiName = process.env.DEV ? "/wiki/" : "/wiki/wiki/";

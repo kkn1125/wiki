@@ -4,6 +4,9 @@
 @import "text";
 
 @for $i from 0 to 11 {
+  .gap-#{$i} {
+    gap: #{$i}rem;
+  }
   /* padding */
   .pl-#{$i} {
     @include pl($i);
@@ -253,9 +256,7 @@ $btn-hover-opacity: 80;
   margin-left: auto;
   margin-right: auto;
   max-width: 50%;
-  &.flex-column {
-    flex-direction: column;
-  }
+
   & figcaption {
     &::before {
       content: "caption: ";

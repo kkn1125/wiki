@@ -1,8 +1,8 @@
 import Router from "@/module/router";
 import { WIKI } from "@/util/global";
-// import { globalRemoteController } from "@/util/tool";
 
 export default class BasePage {
+  published: boolean;
   name: string;
   path: string;
   global: string = "";
@@ -11,9 +11,16 @@ export default class BasePage {
   author: string = WIKI.AUTHOR as string;
   router!: Router;
 
-  constructor(name: string, path: string) {
-    this.name = name;
-    this.path = path;
+  constructor(name: BasePage);
+  constructor(name: string, path: string);
+  constructor(nameOrPage: string | BasePage, path?: string) {
+    if (nameOrPage instanceof BasePage) {
+      this.name = nameOrPage.name;
+      this.path = nameOrPage.path;
+    } else {
+      this.name = nameOrPage;
+      this.path = path;
+    }
 
     /* global buttom remote controller */
     // this.setGlobal(globalRemoteController());

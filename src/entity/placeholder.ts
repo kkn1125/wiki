@@ -1,5 +1,5 @@
 export default class Placeholder {
-  static id: number = 0;
+static id: number = 0;
   id: number = 0;
   image: HTMLImageElement;
   width: number = 0;

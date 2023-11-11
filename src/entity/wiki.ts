@@ -4,6 +4,9 @@ import { TITLE_2, TITLE_4 } from "@/util/global";
 import cc from "@/assets/svg/cc";
 import MarkdownIt from "markdown-it";
 import markdownItAttrs from "markdown-it-attrs";
+import markdownItMultimdTable from "markdown-it-multimd-table";
+import { Link } from "@/types";
+import OriginalPost from "./origin.post";
 
 const mdParser = new MarkdownIt();
 
@@ -32,12 +35,14 @@ mdParser.use(markdownItAttrs, {
   rightDelimiter: "}",
   allowedAttributes: [], // empty array = all attributes are allowed
 });
-
-type Link = {
-  name: string;
-  path: string;
-  target: string;
-};
+mdParser.use(markdownItMultimdTable, {
+  multiline: false,
+  rowspan: true,
+  colspan: true,
+  headerless: false,
+  multibody: true,
+  aotolabel: true,
+});
 
 export default class Wiki extends Page {
   category: string = "";
@@ -48,8 +53,13 @@ export default class Wiki extends Page {
 
   constructor(name: string, path: string);
   constructor(name: string, path: string, category: string, tags: string[]);
-  constructor(name: string, path: string, category?: string, tags?: string[]) {
-    super(name, path);
+  constructor(
+    nameOrWiki: string,
+    path?: string,
+    category?: string,
+    tags?: string[]
+  ) {
+    super(nameOrWiki, path);
     category && (this.category = category);
     tags && (this.tags = tags);
   }
@@ -108,14 +118,16 @@ export default class Wiki extends Page {
         <div class="section">
           <h4 class="${classes(TITLE_4)}">Attached Links</h4>
           <ul>
-              ${this.links.map(
-                (link) =>
-                  `<li>
+              ${this.links
+                .map(
+                  (link) =>
+                    `<li>
                   <a href='${link.path}' ${
-                    link.target && `target="${link.target}"`
-                  }>${link.name}</a>
+                      link.target && `target="${link.target}"`
+                    }>${link.name}</a>
                 </li>`
-              )}
+                )
+                .join("")}
               <!-- Add your links here -->
           </ul>
         </div>

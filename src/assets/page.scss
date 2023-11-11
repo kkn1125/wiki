@@ -46,6 +46,42 @@
       overflow-y: auto;
       overflow-x: hidden;
       height: 80vh;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+
+      table {
+        @include my(2);
+        table-layout: fixed;
+        border-collapse: collapse;
+        border-spacing: 0;
+        thead {
+          tr {
+            background-color: #{$gray-color}56;
+            th {
+              @include px(3);
+              @include py(2);
+            }
+          }
+          border-bottom: 5px solid $gray-color;
+          &:last-child {
+            border-bottom: none;
+          }
+        }
+        tbody {
+          tr {
+            border-bottom: 1px solid #{$gray-color}56;
+            td {
+              @include px(3);
+              @include py(2);
+            }
+
+            &:last-of-type {
+              border-bottom: none;
+            }
+          }
+        }
+      }
 
       /* Scroll Styles */
       &::-webkit-scrollbar {
@@ -107,7 +143,7 @@
         flex-direction: column;
         // margin: 20px 0;
         @include mx(0);
-        @include my(7);
+        // @include my(5);
         position: relative;
 
         &:first-of-type {
@@ -159,6 +195,8 @@
     list-style: none;
     padding: 0;
     margin-bottom: 10rem;
+    gap: 0.5rem;
+    @include mt(2);
 
     button {
       width: 40px; /* Adjust the button size as needed */
@@ -168,7 +206,7 @@
       background: transparent; /* Transparent background */
       color: #000; /* Black text color */
       cursor: pointer;
-      margin: 0 1rem; /* 1rem margin between buttons */
+      // margin: 0 1rem; /* 1rem margin between buttons */
     }
   }
 
@@ -198,7 +236,7 @@
   justify-content: center;
   z-index: 100;
   padding: 1rem;
-  padding-bottom: 2em;
+  padding-bottom: 3em;
   background-color: $white-color;
   //border: 1px solid #;
   box-shadow: 0 0 1rem 0 #{$gray-color}56;
@@ -261,7 +299,7 @@
   &::after {
     content: "Copyright 2023. kimson all rights reserved.";
     position: absolute;
-    bottom: 0.25em;
+    bottom: 0.75em;
   }
 }
 

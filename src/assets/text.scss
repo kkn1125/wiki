@@ -15,7 +15,7 @@
 
 @for $i from 1 to 11 {
   .title-#{$i} {
-    font-size: #{(11 - $i - 5) * 0.75}rem; // 비율 재설정
+    font-size: #{(11 - $i - 5) * 0.65}rem; // 비율 재설정
     font-weight: (11 - $i) * 50 + 150;
     margin-bottom: 0.25em;
   }

@@ -1,7 +1,6 @@
 import Page from "@/entity/page";
-import Navigator from "@/module/navigator";
 import { TITLE_3 } from "@/util/global";
-import { classes, timeFormat } from "@/util/tool";
+import { classes, htmlTo, timeFormat } from "@/util/tool";
 
 export const wiki = new Page("wiki", "/wiki/");
 wiki.created_at = new Date(2023, 10, 8);
@@ -20,13 +19,14 @@ wiki.content = () => {
 </div>
 <div class="section">
     <h3 class="${classes(TITLE_3)}">Recently Registered Wikis</h3>
-    <ul>
+    <ul style="min-height: 8em;" class="list-style-none">
         ${wiki.wikis
+          .toReversed()
           .slice(0, 5)
           .map(
             (child) =>
               `<li>
-            <a href='javascript:void(0)' ${Navigator.htmlTo(
+            <a href='javascript:void(0)' ${htmlTo(
               child.parent.path + child.path
             )}>${child.name}</a>, ${child.author}, ${timeFormat(
                 "YYYY-MM-dd HH:mm",
@@ -39,19 +39,22 @@ wiki.content = () => {
 </div>
 <div class="section">
     <h3 class="${classes(TITLE_3)}">All Wikis</h3>
-    <ul>
+    <ul style="min-height: 360px;" class="list-style-none d-flex flex-column gap-1">
         ${wiki.wikis
+          .toReversed()
           .slice((page - 1) * 5, page * 5)
           .map(
             (child) =>
               `<li>
-              <a href='javascript:void(0)' ${Navigator.htmlTo(
-                child.parent.path + child.path
-              )}>${child.name}</a>, ${child.author}, ${timeFormat(
-                "YYYY-MM-dd HH:mm",
-                child.created_at
-              )}
-            </li>`
+            <a href='javascript:void(0)' ${htmlTo(
+              child.parent.path + child.path
+            )}>${child.name}</a>
+            <span class="d-block">${child.author}</span>
+            <span class="d-block">${timeFormat(
+              "YYYY-MM-dd HH:mm",
+              child.created_at
+            )}</span>
+          </li>`
           )
           .join("")}
         <!-- Display paginated list of wikis here -->
@@ -61,9 +64,9 @@ wiki.content = () => {
           .fill(null)
           .map(
             (child, index) =>
-              `<button data-page="${index + 1}" ${Navigator.htmlTo(
-                `#${index + 1}`
-              )}>${index + 1}</button>`
+              `<button data-page="${index + 1}" ${htmlTo(`#${index + 1}`)}>${
+                index + 1
+              }</button>`
           )
           .join("")}
     </div>

@@ -1,5 +1,6 @@
 import BasePage from "@entity/base.page";
 import Wiki from "./wiki";
+import OriginalPost from "./origin.post";
 
 export default class Page extends BasePage {
   content: () => string = () => "";

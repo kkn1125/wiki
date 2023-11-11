@@ -1,5 +1,3 @@
-import Navigator from "@/module/navigator";
-
 export function classes(classNames?: string[]): string;
 export function classes(a: string, ...classNames: string[]): string;
 export function classes(a: string[], ...classNames: string[]): string;
@@ -13,19 +11,7 @@ export function classes(
     return [].join(" ");
   }
 }
-export function globalRemoteController() {
-  return `<div class="button-container">
-  <div data-btn-path="/" class="panel-item round-button" ${Navigator.htmlTo(
-    "/"
-  )}>home</div>
-  <div data-btn-path="/wiki/" class="panel-item round-button" ${Navigator.htmlTo(
-    "/wiki/"
-  )}>wiki</div>
-  <div data-btn-path="/about/" class="panel-item round-button" ${Navigator.htmlTo(
-    "/about/"
-  )}>about</div>
-</div>`;
-}
+
 export function getLocaleTime(time: Date) {
   return time.toLocaleString("ko", { hour12: true });
 }
@@ -48,6 +34,11 @@ export const figImage = (src: string, caption: string, alt?: string) => {
     <figcaption>${caption}</figcaption>
   </figure>`;
 };
+
+export const mdImageAuto = (path: string, alt: string) =>
+  `![${alt}](${
+    process.env.NODE_ENV === "development" ? "" : "/wiki"
+  }/images/${path})`;
 
 export const timeFormat = (format: string, time: Date) => {
   const base = new Date(time);
@@ -86,3 +77,6 @@ export const timeFormat = (format: string, time: Date) => {
     }
   });
 };
+export function htmlTo(path: string) {
+  return `onclick="window.wiki.navigator.to('${cleanSlash(path)}')"`;
+}
