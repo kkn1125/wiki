@@ -119,7 +119,7 @@ ${mdImageAuto("os/aca04.png", "kimson")}
 
 `,
   ],
-  links: [
+  ref: [
     {
       name: "경성대 양희재 교수님 - 2강 고등운영체제, 인터럽트 기반 운영체제",
       link: "http://www.kocw.net/home/cview.do?mty=p&kemId=978503",

@@ -24,11 +24,16 @@ declare interface OriginPost {
   toc: boolean;
   md: boolean;
   content: string[];
-  ref: Link[];
+  ref: OriginLink[];
 }
 
 type Link = {
   name: string;
   path: string;
   target: string;
+};
+
+type OriginLink = {
+  name: string;
+  link: string;
 };

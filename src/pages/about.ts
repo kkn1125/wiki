@@ -1,5 +1,5 @@
 import Page from "@/entity/page";
-import { TITLE_3, WIKI } from "@/util/global";
+import { TITLE_1, TITLE_2, TITLE_3, WIKI } from "@/util/global";
 import { classes } from "@/util/tool";
 
 export const about = new Page("about", "/about/");
@@ -7,9 +7,10 @@ about.created_at = new Date(2023, 10, 8);
 about.content = () =>
   Page.Layout`
 <div class="section">
-  <h3 class="${classes(TITLE_3)}">About</h3>
+  <h1 class="${classes(TITLE_1)}">About</h1>
   <p>Name: ${WIKI.AUTHOR}</p>
-  <a href="mailto:${WIKI.EMAIL}">Email: ${WIKI.EMAIL}</a>
+  <a href="mailto:${WIKI.EMAIL}" clickable>Email: ${WIKI.EMAIL}</a>
+  <p>Current Version: ${WIKI.VERSION}</p>
 </div>
 <div class="section">
   <h3 class="${classes(TITLE_3)}">Purpose</h3>

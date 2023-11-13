@@ -8,7 +8,7 @@ import Placeholder from "@/entity/placeholder";
 
 export default class Navigator {
   router: Router;
-  history: Page[] = [];
+  history: { page: Page; hash: string }[] = [];
   currentPage!: Page;
 
   private initialEventListeners() {
@@ -55,8 +55,81 @@ export default class Navigator {
     /* 검색창 기능 */
     window.addEventListener("keyup", this.handleDisplayResult.bind(this));
 
+    // window.addEventListener("load", this.handleLoadForTitleHash.bind(this));
+
     // this.detectHash();
     // window.addEventListener("hashchange", this.detectHash.bind(this));
+  }
+
+  private handleLoadForTitleHash() {
+    const hList = [
+      ...document.querySelectorAll("h1, h2, h3, h4, h5, h6"),
+    ].slice(1);
+    hList.forEach((el: HTMLTitleElement, i: number) => {
+      // console.log(el);
+      el.id = `#${encodeURIComponent(
+        el.innerText
+          .toLowerCase()
+          .replace(/[\s\-\_!@#$%^&*]+/, "-")
+          .replace(/[\(\)]+/, "")
+      )}`;
+      const toc = document.querySelector("#toc");
+      const handleToHash = () => {
+        this.to(el.id);
+        el.scrollIntoView({
+          behavior: "instant",
+          block: "start",
+          inline: "center",
+        });
+      };
+      if (toc) {
+        const div = document.createElement("div");
+        div.setAttribute("clickable", "");
+        div.innerText = el.innerText;
+        div.id = el.id;
+
+        div.onclick = handleToHash;
+        switch (el.tagName) {
+          case "H1":
+            div.innerText = el.innerText;
+            div.classList.add("pl-0");
+            break;
+          case "H2":
+            div.innerText = el.innerText;
+            div.classList.add("pl-1");
+            break;
+          case "H3":
+            div.innerText = el.innerText;
+            div.classList.add("pl-2");
+            break;
+          case "H4":
+            div.innerText = el.innerText;
+            div.classList.add("pl-3");
+            break;
+          case "H5":
+            div.innerText = el.innerText;
+            div.classList.add("pl-4");
+            break;
+          case "H6":
+            div.innerText = el.innerText;
+            div.classList.add("pl-5");
+            break;
+          default:
+            break;
+        }
+        toc.append(div);
+      }
+
+      el.setAttribute("clickable", "");
+      el.onclick = handleToHash;
+
+      if (hList.length - 1 !== i) {
+        const divider = document.createElement("div");
+        divider.classList.add("divider");
+        divider.classList.add("my-1");
+        toc.append(divider);
+      }
+    });
   }
 
   private handleExitResults(e: KeyboardEvent) {
@@ -124,7 +197,7 @@ export default class Navigator {
             list
               .map(
                 (li) => `
-            <span>
+            <span clickable>
             <a href="javascript:void(0);" ${htmlTo(li.parent.path + li.path)}>
               <span>
                 ${li.name}
@@ -157,11 +230,23 @@ export default class Navigator {
     );
   }
 
+  isSameHistoryBefore(page: Page) {
+    return (
+      this.history.at(-1)?.page === page /* &&
+      this.history.at(-1)?.hash === location.hash */
+    );
+  }
+
   detectPathAndReplaceCurrentPage() {
     const page = this.findPage(
       location.pathname.slice(process.env.NODE_ENV === "development" ? 0 : 5)
     );
     // console.log(page, location.pathname.slice(import.meta.env.DEV ? 0 : 5));
+
+    if (this.isSameHistoryBefore(page)) {
+      return;
+    }
+
     if (page) {
       this.stackHistory(page);
       this.swapPage(page);
@@ -182,6 +267,32 @@ export default class Navigator {
       //   location.pathname.slice(import.meta.env.DEV ? 0 : 5)
       // );
     }
+    if (page instanceof Wiki) {
+      this.handleLoadForTitleHash();
+    }
+
+    /* codeblock detect */
+    const codeblocks = [...document.querySelectorAll("pre")];
+    codeblocks.forEach((el) => {
+      const code = el.querySelector("code");
+      const copy = document.createElement("button");
+      const filename = code.getAttribute("filename");
+      if (filename) {
+        el.setAttribute("filename", filename);
+      }
+      copy.innerText = "Copy";
+      copy.classList.add("btn", "btn-2", "btn-primary", "copy-btn");
+      copy.onclick = async () => {
+        await navigator.clipboard.writeText(code.innerText);
+        copy.classList.add("copied");
+        copy.innerText = "✨ Copied";
+        setTimeout(() => {
+          copy.classList.remove("copied");
+          copy.innerText = "Copy";
+        }, 2000);
+      };
+      el.append(copy);
+    });
   }
 
   findPage(name: string): Page | null;
@@ -209,7 +320,10 @@ export default class Navigator {
   }
 
   stackHistory(page: Page) {
-    this.history.push(page);
+    this.history.push({
+      page,
+      hash: location.hash,
+    });
   }
 
   swapPage(page: Page) {

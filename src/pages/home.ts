@@ -1,12 +1,21 @@
 import Page from "@/entity/page";
 import Placeholder from "@/entity/placeholder";
+import Wiki from "@/entity/wiki";
 import { TITLE_1, TITLE_2, WIKI } from "@/util/global";
 import { classes, getLocaleTime, htmlTo, timeFormat } from "@/util/tool";
 
 export const home = new Page("home", "/");
 home.created_at = new Date(2023, 10, 8);
-home.content = () =>
-  Page.Layout`
+home.content = () => {
+  const tags = [
+    ...new Set(
+      home.router.pathManager
+        .get("/wiki/")
+        ?.wikis.map((wiki) => [wiki.category, ...wiki.tags])
+        .flat(1)
+    ),
+  ];
+  return Page.Layout`
 <div class="section">
   <h1 class="${classes(TITLE_1)}">
     <span class="${classes("capitailze")}">wiki</span>
@@ -23,40 +32,24 @@ home.content = () =>
   <h2 class="${classes(TITLE_2)}">Most Recent Wiki</h2>
   ${home.router.pathManager
     .get("/wiki/")
-    ?.wikis.slice(0, 5)
-    .map(
-      (child) =>
-        `<div clickable ${htmlTo(child.parent.path + child.path)}>
-          <p>Title: ${child.name}</p>
-          <p>Author: ${child.author}</p>
-          <p>Creation Time: ${timeFormat(
-            "YYYY-MM-dd HH:mm",
-            child.created_at
-          )}</p>
-        </div>`
-    )
+    ?.wikis.toSorted((a, b) => (a.created_at < b.created_at ? 1 : -1))
+    .slice(0, 5)
+    .map((child) => Wiki.ListItemComponent(child))
     .join("<br />")}
 </div>
 <div class="section">
   <h2 class="${classes(TITLE_2)}">Keywords</h2>
-  <div class="keyword-container">
-      ${[
-        ...new Set(
-          home.router.pathManager
-            .get("/wiki/")
-            ?.wikis.map((wiki) => [wiki.category, ...wiki.tags])
-            .flat(1)
-        ),
-      ]
+  <div class="keyword-container align-items-center">
+      ${tags
+        .slice(0)
         .map((str) => `<div class="category-badge">${str}</div>`)
-        .join("")}
+        .join("")}${
+    false
+      ? `<span title="${tags.slice(10).join(", ")}">+${tags.length - 10}</span>`
+      : ""
+  }
       <!-- Keywords will be dynamically added here -->
   </div>
 </div>
-<div class="section">
-  <h2 class="${classes(TITLE_2)}">Wiki Page Info</h2>
-  <p>Current Version: ${WIKI.VERSION}</p>
-  <p>Author: ${WIKI.AUTHOR}</p>
-  <p>Purpose: This is a personal wiki page.</p>
-</div>
 `.trim();
+};

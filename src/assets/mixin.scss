@@ -10,20 +10,20 @@
 
 /* padding */
 @mixin pl($size) {
-  padding-left: #{$size * 0.5}rem;
+  padding-left: #{$size * 0.5}rem !important;
 }
 @mixin pr($size) {
-  padding-right: #{$size * 0.5}rem;
+  padding-right: #{$size * 0.5}rem !important;
 }
 @mixin px($size) {
   @include pl($size);
   @include pr($size);
 }
 @mixin pt($size) {
-  padding-top: #{$size * 0.5}rem;
+  padding-top: #{$size * 0.5}rem !important;
 }
 @mixin pb($size) {
-  padding-bottom: #{$size * 0.5}rem;
+  padding-bottom: #{$size * 0.5}rem !important;
 }
 @mixin py($size) {
   @include pt($size);
@@ -35,20 +35,20 @@
 }
 /* margin */
 @mixin ml($size) {
-  margin-left: #{$size * 0.5}rem;
+  margin-left: #{$size * 0.5}rem !important;
 }
 @mixin mr($size) {
-  margin-right: #{$size * 0.5}rem;
+  margin-right: #{$size * 0.5}rem !important;
 }
 @mixin mx($size) {
   @include ml($size);
   @include mr($size);
 }
 @mixin mt($size) {
-  margin-top: #{$size * 0.5}rem;
+  margin-top: #{$size * 0.5}rem !important;
 }
 @mixin mb($size) {
-  margin-bottom: #{$size * 0.5}rem;
+  margin-bottom: #{$size * 0.5}rem !important;
 }
 @mixin my($size) {
   @include mt($size);

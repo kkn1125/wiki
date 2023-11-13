@@ -12,6 +12,9 @@ body {
   height: 100%;
   overflow: hidden;
   font-size: 14px;
+  & * {
+    cursor: none !important;
+  }
 }
 
 body {
@@ -27,6 +30,17 @@ body {
   h#{$i} {
     @include eng-font;
     margin: 0;
+    font-size: 18px;
+    scroll-margin: 2rem;
+  }
+}
+
+ol,
+ul {
+  line-height: 1.8;
+  & ol,
+  ul {
+    padding-inline-start: 1.5em;
   }
 }
 
@@ -34,4 +48,13 @@ body {
   list-style: none;
   margin: 0;
   padding: 0;
+}
+
+#mouse-layer {
+  position: fixed;
+  pointer-events: none;
+  user-select: none;
+  top: 0;
+  left: 0;
+  z-index: 1000;
 }

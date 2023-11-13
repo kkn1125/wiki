@@ -113,7 +113,7 @@ pre[class*="language-"] code {
 }
 
 .token.entity {
-  cursor: help;
+  /* cursor: help; */
 }
 
 .token.italic {

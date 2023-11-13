@@ -46,6 +46,7 @@ export default class BasePage {
       <div class="fade-out-top"></div>
       <div class="wiki-book">
         ${temp}
+        <div class="mb-10"></div>
       </div>
       <!-- Bottom Fade Out Effect -->
       <div class="fade-out-bottom"></div>

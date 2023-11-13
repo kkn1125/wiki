@@ -1,3 +1,17 @@
+/* Scroll Styles */
+::-webkit-scrollbar {
+  width: 10px; /* Scroll bar width */
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(128, 128, 128, 0.5); /* 50% bright gray for thumb color */
+  border-radius: 0.3rem; /* Rounded thumb */
+}
+
+::-webkit-scrollbar-track {
+  background: transparent; /* Transparent track color */
+}
+
 #app {
   height: inherit;
   width: 100%;
@@ -49,6 +63,7 @@
       display: flex;
       flex-direction: column;
       gap: 2rem;
+      align-items: center;
 
       table {
         @include my(2);
@@ -81,25 +96,6 @@
             }
           }
         }
-      }
-
-      /* Scroll Styles */
-      &::-webkit-scrollbar {
-        width: 10px; /* Scroll bar width */
-      }
-
-      &::-webkit-scrollbar-thumb {
-        background: rgba(
-          128,
-          128,
-          128,
-          0.5
-        ); /* 50% bright gray for thumb color */
-        border-radius: 0.3rem; /* Rounded thumb */
-      }
-
-      &::-webkit-scrollbar-track {
-        background: transparent; /* Transparent track color */
       }
 
       .search-results {
@@ -138,20 +134,25 @@
         cursor: pointer;
       }
 
+      @media (min-width: 0px) {
+        .section {
+          width: 90%;
+        }
+      }
+      @media (min-width: 768px) {
+        .section {
+          width: 50%;
+        }
+      }
+
       .section {
         display: flex;
         flex-direction: column;
+
         // margin: 20px 0;
         @include mx(0);
         // @include my(5);
         position: relative;
-
-        &:first-of-type {
-          @include mt(0);
-        }
-        &:last-of-type {
-          @include mb(0);
-        }
 
         .keyword-container {
           display: flex;
@@ -176,6 +177,39 @@
           @include my(3);
         }
       }
+      p {
+        & > code {
+          @include px(0.8);
+          @include py(0.5);
+          @include mx(0.3);
+          background-color: $primary-color;
+          color: $white-color;
+          @include border-radius(0.3rem);
+        }
+      }
+
+      pre[filename] {
+        padding-top: 2.5em;
+        &::before {
+          content: attr(filename);
+          font-weight: 700;
+          font-size: 14px;
+          position: absolute;
+          left: 1em;
+          top: 0.5em;
+          color: $white-color;
+          font-family: "Open Sans", sans-serif;
+        }
+      }
+
+      .wiki-content {
+        & p {
+          text-indent: 1em;
+        }
+        & blockquote {
+          text-indent: 1em;
+        }
+      }
     }
   }
 
@@ -194,7 +228,6 @@
     justify-content: center; /* Center align the buttons */
     list-style: none;
     padding: 0;
-    margin-bottom: 10rem;
     gap: 0.5rem;
     @include mt(2);
 
@@ -211,18 +244,28 @@
   }
 
   [clickable] {
-    border: 1px solid #ccc;
-    padding: 0.5rem 1.8rem;
+    // border: 1px solid #ccc;
+    // padding: 0.5rem 1.8rem;
 
     cursor: pointer;
+    &:hover {
+      color: #{$secondary-color} !important;
+    }
     &:hover * {
-      color: #{$primary-color} !important;
+      color: #{$secondary-color} !important;
     }
     transition: 150ms ease-in-out;
     -webkit-transition: 150ms ease-in-out;
     -moz-transition: 150ms ease-in-out;
     -ms-transition: 150ms ease-in-out;
     -o-transition: 150ms ease-in-out;
+  }
+
+  :is(h1, h2, h3, h4, h5, h6)[clickable] {
+    &:hover::after {
+      content: " #";
+      color: gray;
+    }
   }
 }
 
@@ -258,6 +301,8 @@
     margin: 0 1rem;
 
     background: #fff;
+
+    box-shadow: 0 0 5px 0 #00000036;
 
     &:hover,
     &.current-page {
@@ -303,6 +348,50 @@
   }
 }
 
+#toc {
+  @include p(2);
+  @include border-radius(0.5rem);
+  box-shadow: 0 0 1rem 0 #{$gray-color}56;
+  position: fixed;
+  left: calc(100% - (100% - 60%) / 2);
+  top: 50px;
+  min-width: 100px;
+  max-width: 200px;
+  min-height: 50px;
+  max-height: 70vh;
+  // bottom: 50px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  & div {
+    // cursor: pointer;
+    font-weight: 500;
+    font-size: 0.8em;
+    // @include transition(150ms ease-in-out);
+    // &:hover {
+    //   color: $primary-color;
+    // }
+  }
+
+  .divider {
+    height: 1px;
+    &:not(:last-of-type)::after {
+      content: "";
+      display: flex;
+      width: 100%;
+      height: 1px;
+      border-bottom: 1px solid #{$gray-color}36;
+    }
+  }
+}
+
 // .current-page {
 //   box-shadow: 0 0 1rem 0 #c62d46;
 // }
+
+.copy-btn {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+}

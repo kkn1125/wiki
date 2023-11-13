@@ -1,11 +1,11 @@
-import { classes, getLocaleTime } from "@/util/tool";
-import Page from "./page";
-import { TITLE_2, TITLE_4 } from "@/util/global";
 import cc from "@/assets/svg/cc";
+import { Link, OriginPost } from "@/types";
+import { TITLE_2, TITLE_4 } from "@/util/global";
+import { classes, getLocaleTime, htmlTo, timeFormat } from "@/util/tool";
 import MarkdownIt from "markdown-it";
 import markdownItAttrs from "markdown-it-attrs";
 import markdownItMultimdTable from "markdown-it-multimd-table";
-import { Link } from "@/types";
+import Page from "@/entity/page";
 import OriginalPost from "./origin.post";
 
 const mdParser = new MarkdownIt();
@@ -112,7 +112,7 @@ export default class Wiki extends Page {
               .join("")}
           </p>
         </div>
-        <div class="section">
+        <div class="section wiki-content">
         ${mdParser.render(temp)}
         </div>
         <div class="section">
@@ -136,8 +136,44 @@ export default class Wiki extends Page {
         </div>
 
       </div>
+      <div id="toc"></div>
       <!-- Bottom Fade Out Effect -->
       <div class="fade-out-bottom"></div>
     </main>`;
+  }
+
+  static convertNewPage(originWiki: OriginPost, path: string) {
+    const orginalWiki = new OriginalPost(originWiki);
+    const wiki = new Wiki(orginalWiki.title, path);
+    wiki.category = orginalWiki.categories.pop();
+    wiki.tags = orginalWiki.tags;
+    wiki.cover = "";
+    wiki.links = (orginalWiki.ref.map(({ name, link }) => ({
+      name,
+      path: link,
+      taget: "_blank",
+    })) || []) as unknown as Link[];
+    wiki.content = () =>
+      Wiki.Layout.bind(wiki)`${orginalWiki.content.join("")}`;
+    wiki.published = orginalWiki.published;
+    wiki.name = orginalWiki.title;
+    wiki.path = path;
+    wiki.created_at = new Date(orginalWiki.wrote);
+    wiki.updated_at = new Date(orginalWiki.modified);
+    wiki.author = orginalWiki.authors.pop();
+    return wiki;
+  }
+
+  static ListItemComponent(child: Wiki) {
+    return `<div clickable ${htmlTo(
+      child.parent.path + child.path
+    )} class="wiki-entry">
+      <div class="wiki-title fw-700">${child.name}</div>
+      <p class="wiki-author">작성자: ${child.author}</p>
+      <p class="wiki-time">작성시간: ${timeFormat(
+        "YYYY-MM-dd HH:mm",
+        child.created_at
+      )}</p>
+    </div>`;
   }
 }

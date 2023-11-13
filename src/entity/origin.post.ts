@@ -1,5 +1,4 @@
-import { Link, OriginPost } from "@/types";
-import Wiki from "./wiki";
+import { OriginLink, OriginPost } from "@/types";
 
 export default class OriginalPost {
   published: boolean;
@@ -13,7 +12,7 @@ export default class OriginalPost {
   toc: boolean;
   md: boolean;
   content: string[];
-  ref: Link[];
+  ref: OriginLink[];
 
   constructor(private original: OriginPost) {
     const {
@@ -43,21 +42,5 @@ export default class OriginalPost {
     toc && (this.toc = toc);
     md && (this.md = md);
     content && (this.content = content);
-  }
-
-  convertNewPage(path: string) {
-    const wiki = new Wiki(this.title, path);
-    wiki.category = this.categories.pop();
-    wiki.tags = this.tags;
-    wiki.cover = "";
-    wiki.links = this.ref || [];
-    wiki.content = () => Wiki.Layout.bind(wiki)`${this.content.pop()}`;
-    wiki.published = this.published;
-    wiki.name = this.title;
-    wiki.path = path;
-    wiki.created_at = new Date(this.wrote);
-    wiki.updated_at = new Date(this.modified);
-    wiki.author = this.authors.pop();
-    return wiki;
   }
 }
