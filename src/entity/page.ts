@@ -29,6 +29,10 @@ export default class Page extends BasePage {
     });
   }
 
+  hasReRenderElement() {
+    return this.content().includes("re-render");
+  }
+
   isSame(obj1: Object, obj2: Object) {
     return [...Object.entries(obj1)].every(([k, v]) =>
       v instanceof Object ? this.isSame(obj1[k], obj2[k]) : obj2[k] === v

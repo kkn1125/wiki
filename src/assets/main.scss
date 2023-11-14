@@ -320,6 +320,9 @@ $btn-hover-opacity: 80;
   border: 1px solid #ddd;
   @include border-radius(0.5rem);
   @include p(3);
+  & p {
+    @include my(0.2);
+  }
   margin-bottom: 8px;
 }
 

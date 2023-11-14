@@ -165,15 +165,23 @@ export default class Wiki extends Page {
   }
 
   static ListItemComponent(child: Wiki) {
-    return `<div clickable ${htmlTo(
-      child.parent.path + child.path
-    )} class="wiki-entry">
-      <div class="wiki-title fw-700">${child.name}</div>
-      <p class="wiki-author">작성자: ${child.author}</p>
-      <p class="wiki-time">작성시간: ${timeFormat(
-        "YYYY-MM-dd HH:mm",
-        child.created_at
-      )}</p>
-    </div>`;
+    if (child !== null) {
+      return `<div clickable ${htmlTo(
+        child.parent.path + child.path
+      )} class="wiki-entry">
+        <div class="wiki-title fw-700">${child.name}</div>
+        <p class="wiki-author">작성자: ${child.author}</p>
+        <p class="wiki-time">작성시간: ${timeFormat(
+          "YYYY-MM-dd HH:mm",
+          child.created_at
+        )}</p>
+      </div>`;
+    } else {
+      return `<div clickable class="wiki-entry">
+        <div dummy class="wiki-title fw-700"></div>
+        <p dummy class="wiki-author"></p>
+        <p dummy class="wiki-time"></p>
+      </div>`;
+    }
   }
 }

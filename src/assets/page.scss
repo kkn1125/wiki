@@ -267,6 +267,41 @@
       color: gray;
     }
   }
+
+  @mixin animation($values...) {
+    animation: $values;
+    -webkit-animation: $values;
+  }
+
+  [dummy] {
+    &::before {
+      content: "a";
+      pointer-events: none;
+      user-select: none;
+      color: transparent;
+    }
+    @include border-radius(0.5rem);
+    background: linear-gradient(
+      -45deg,
+      #{$gray-color}#{46 - 10} 0%,
+      #{$gray-color}#{46 - 10} 35%,
+      #{$gray-color}#{26 - 5} 50%,
+      #{$gray-color}#{46 - 10} 75%,
+      #{$gray-color}#{46 - 10} 100%
+    );
+    width: 100%;
+
+    @include animation(flow-animate 15s linear infinite);
+  }
+
+  @keyframes flow-animate {
+    0% {
+      background-position: 0% 0%;
+    }
+    100% {
+      background-position: 90vw 0%;
+    }
+  }
 }
 
 .button-container {

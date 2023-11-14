@@ -250,15 +250,22 @@ export default class Navigator {
     // console.log(page);
     // console.log(page, location.pathname.slice(import.meta.env.DEV ? 0 : 5));
 
-    if (this.isSameHistoryBefore(page)) {
-      if (page.useRerender) {
-        // pass
-        // if (page.propsChanged) {
-        //   console.log(123);
-        // }
-      } else {
-        return;
-      }
+    if (
+      this.isSameHistoryBefore(page) &&
+      /* re-render 요소만 부분 업데이트 */
+      !page.hasReRenderElement()
+    ) {
+      // if (page.useRerender) {
+      //   // pass
+      //   // if (page.propsChanged) {
+      //   //   console.log(123);
+      //   // }
+
+      //   return;
+      // } else {
+      //   return;
+      // }
+      return;
     }
 
     if (page) {
@@ -365,11 +372,24 @@ export default class Navigator {
   }
 
   renderView(page: Page) {
-    this.clearApp();
     const { body } = new DOMParser().parseFromString(
       page.render() + page.global,
       "text/html"
     );
+
+    /* re-render 요소만 부분 업데이트 */
+    const reRenderElement = body.querySelector("[re-render]");
+    if (reRenderElement) {
+      const reRenderElementInOrigin =
+        document.body.querySelector("[re-render]");
+      if (reRenderElementInOrigin) {
+        reRenderElementInOrigin.innerHTML = reRenderElement.innerHTML;
+        return;
+      }
+    }
+
+    this.clearApp();
+
     APP.append(...[...body.children]);
     document.querySelectorAll("img").forEach((img) => {
       new ResizeObserver(Placeholder.getImageUrl.bind(img)).observe(img);
