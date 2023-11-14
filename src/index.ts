@@ -119,4 +119,4 @@ window.wiki = {
   router,
 };
 
-const pointer = new Pointer();
+// const pointer = new Pointer();

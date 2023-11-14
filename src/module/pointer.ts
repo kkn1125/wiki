@@ -23,6 +23,11 @@ export default class Pointer {
     ) as HTMLCanvasElement,
     private readonly ctx = canvas.getContext("2d")
   ) {
+    const body = document.querySelector("body");
+    if (body) {
+      body.classList.add("none-cursor");
+    }
+
     window.addEventListener("mousemove", this.handleMouseMovement.bind(this));
     window.addEventListener("resize", this.handleResize.bind(this));
     window.addEventListener("load", this.loadAnimation.bind(this));

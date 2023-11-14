@@ -78,5 +78,5 @@ export const timeFormat = (format: string, time: Date) => {
   });
 };
 export function htmlTo(path: string) {
-  return `onclick="window.wiki.navigator.to('${cleanSlash(path)}')"`;
+  return `onclick="window.wiki.navigator.to('${path}')"`;
 }

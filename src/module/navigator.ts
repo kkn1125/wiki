@@ -223,11 +223,17 @@ export default class Navigator {
   // }
 
   to(path: string) {
-    window.history.pushState(
-      {},
-      "",
-      cleanSlash(process.env.NODE_ENV === "development" ? path : "/wiki" + path)
-    );
+    if (path.startsWith("#")) {
+      window.history.pushState({}, "", path);
+    } else {
+      window.history.pushState(
+        {},
+        "",
+        cleanSlash(
+          process.env.NODE_ENV === "development" ? path : "/wiki" + path
+        )
+      );
+    }
   }
 
   isSameHistoryBefore(page: Page) {
@@ -241,10 +247,18 @@ export default class Navigator {
     const page = this.findPage(
       location.pathname.slice(process.env.NODE_ENV === "development" ? 0 : 5)
     );
+    // console.log(page);
     // console.log(page, location.pathname.slice(import.meta.env.DEV ? 0 : 5));
 
     if (this.isSameHistoryBefore(page)) {
-      return;
+      if (page.useRerender) {
+        // pass
+        // if (page.propsChanged) {
+        //   console.log(123);
+        // }
+      } else {
+        return;
+      }
     }
 
     if (page) {
